@@ -5,6 +5,7 @@ import {
   ShoppingBasket,
   CircleUserRound,
 } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 
 import { useTheme } from '@/hooks/useTheme';
 import { Button } from '../ui/button';
@@ -67,8 +68,10 @@ export function Header() {
             </Badge>
           </Button>
         </div>
-        <Button variant="ghost" size="icon" className="cursor-pointer">
-          <CircleUserRound className="size-6" />
+        <Button variant="ghost" size="icon" className="cursor-pointer" asChild>
+          <Link to="/login">
+            <CircleUserRound className="size-6" />
+          </Link>
         </Button>
       </div>
     </header>

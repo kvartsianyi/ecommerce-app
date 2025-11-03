@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { ProductCard } from '@/components/features/ProductCard';
-import { ProductFilters } from '@/components/features/ProductFilters';
+// import { ProductFilters } from '@/components/features/ProductFilters';
 import {
   Pagination,
   PaginationContent,
