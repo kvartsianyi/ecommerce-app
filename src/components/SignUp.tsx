@@ -1,3 +1,5 @@
+import { Link } from '@tanstack/react-router';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -17,29 +19,31 @@ export function SignUp() {
       <CardHeader>
         <CardTitle>Зареєструватись</CardTitle>
         <CardDescription>
-          Введіть ваш логін і пароль щоб увійти в акаунт
+          Заповніть форму щоб зареєструвати акаунт
         </CardDescription>
         <CardAction>
-          <Button variant="link" className="cursor-pointer">
-            Увійти
+          <Button variant="link" className="cursor-pointer" asChild>
+            <Link to="/login">Увійти</Link>
           </Button>
         </CardAction>
       </CardHeader>
       <CardContent>
         <form>
           <div className="flex flex-col gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="firstName">Ім'я</Label>
-              <Input id="firstName" type="text" placeholder="Іван" required />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="lastName">Прізвище</Label>
-              <Input
-                id="lastName"
-                type="text"
-                placeholder="Іваненко"
-                required
-              />
+            <div className="flex gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="firstName">Ім'я</Label>
+                <Input id="firstName" type="text" placeholder="Іван" required />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="lastName">Прізвище</Label>
+                <Input
+                  id="lastName"
+                  type="text"
+                  placeholder="Іваненко"
+                  required
+                />
+              </div>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Емейл</Label>
@@ -54,12 +58,16 @@ export function SignUp() {
               <Label htmlFor="password">Пароль</Label>
               <Input id="password" type="password" required />
             </div>
+            <div className="grid gap-2">
+              <Label htmlFor="rePassword">Підтвердити пароль</Label>
+              <Input id="rePassword" type="password" required />
+            </div>
           </div>
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
         <Button type="submit" className="w-full cursor-pointer">
-          Зареєструватись
+          <Link to="/login">Зареєструватись</Link>
         </Button>
       </CardFooter>
     </Card>

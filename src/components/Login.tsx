@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Link } from '@tanstack/react-router';
 
 export function Login() {
   return (
@@ -20,8 +21,8 @@ export function Login() {
           Введіть ваш логін і пароль щоб увійти в акаунт
         </CardDescription>
         <CardAction>
-          <Button variant="link" className="cursor-pointer">
-            Зареєструватись
+          <Button variant="link" className="cursor-pointer" asChild>
+            <Link to="/register">Зареєструватись</Link>
           </Button>
         </CardAction>
       </CardHeader>
@@ -53,8 +54,8 @@ export function Login() {
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full cursor-pointer">
-          Увійти
+        <Button type="submit" className="w-full cursor-pointer" asChild>
+          <Link to="/products">Увійти</Link>
         </Button>
       </CardFooter>
     </Card>
