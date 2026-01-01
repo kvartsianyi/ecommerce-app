@@ -31,7 +31,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   // ---- app init ----
-  console.log('AuthProvider rendered');
   useEffect(() => {
     const init = async () => {
       try {

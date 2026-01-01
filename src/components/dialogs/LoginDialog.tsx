@@ -10,10 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { loginSchema } from '@/schemas/auth';
-import { Field, FieldError, FieldLabel } from '../ui/field';
 import { Spinner } from '../ui/spinner';
+import { FormField } from '../FormField';
 
 type LoginDialogProps = {
   open: boolean;
@@ -64,61 +63,29 @@ export function LoginDialog({
           <div className="space-y-2">
             <form.Field
               name="email"
-              children={(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
-
-                return (
-                  <Field>
-                    <FieldLabel htmlFor={field.name}>
-                      Електронна пошта
-                    </FieldLabel>
-                    <Input
-                      type="email"
-                      placeholder="your@email.com"
-                      required
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                  </Field>
-                );
-              }}
+              children={(field) => (
+                <FormField
+                  field={field}
+                  type="email"
+                  label="Електронна пошта"
+                  placeholder="your@email.com"
+                  required={true}
+                />
+              )}
             />
           </div>
           <div className="space-y-2">
             <form.Field
               name="password"
-              children={(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
-
-                return (
-                  <Field>
-                    <FieldLabel htmlFor={field.name}>Пароль</FieldLabel>
-                    <Input
-                      type="password"
-                      placeholder="••••••••"
-                      required
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                  </Field>
-                );
-              }}
+              children={(field) => (
+                <FormField
+                  field={field}
+                  type="password"
+                  label="Пароль"
+                  placeholder="••••••••"
+                  required={true}
+                />
+              )}
             />
           </div>
           <Button type="submit" className="w-full" onClick={form.handleSubmit}>
@@ -131,7 +98,7 @@ export function LoginDialog({
             <Button
               type="button"
               variant="link"
-              className="cursor-pointer p-0"
+              className="p-0"
               onClick={onSwitchToRegister}
             >
               Зареєструватися
