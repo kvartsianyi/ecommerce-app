@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { ProductCard } from '@/components/features/ProductCard';
@@ -11,59 +12,36 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { fetchProducts } from '@/lib/api';
+import { LoginDialog } from '@/components/features/LoginDialog';
 
 export function ProductsPage() {
   const initialFetchProducts = { data: [] };
 
-  const { data: { data: products } = initialFetchProducts } = useQuery({
-    queryKey: ['products'],
-    queryFn: fetchProducts,
-  });
+  const { data: { data: products } = initialFetchProducts, isPending } =
+    useQuery({
+      queryKey: ['products'],
+      queryFn: fetchProducts,
+    });
 
-  const productsTotal = 124;
+  const [isOpenLogin, setIsOpenLogin] = useState(false);
 
   return (
-    <section className="flex-1 flex gap-4">
-      {/* <div className="w-64">
-        <div className="bg-secondary p-4 rounded-lg">
-          <ProductFilters />
-        </div>
-      </div> */}
-      <div className="flex-1 flex flex-col p-4 rounded-lg">
-        <div className="flex justify-between items-end mb-4">
-          <p className="text-muted-foreground">Знайдено {productsTotal}</p>
-          <Select>
-            <SelectTrigger className="w-[180px] data-[placeholder]:text-foreground">
-              <SelectValue placeholder="Відсортувати" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {/* <SelectLabel>Fruits</SelectLabel> */}
-                <SelectItem value="lowest_price">Від найнижчої</SelectItem>
-                <SelectItem value="highest_price">Від найвищої</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4 mb-4">
-          {products.map((product) => (
-            <ProductCard
-              className="hover:scale-[1.1] transition-transform"
-              key={product.id}
-              product={product}
-            />
-          ))}
-        </div>
-        <Pagination>
+    <>
+      <section className="flex-1 flex flex-col">
+        {isPending && <div className="text-center">Завантаження...</div>}
+        {products.length && (
+          <div className="grid xl:grid-cols-3 lg:grid-cols-3">
+            {products.map((product) => (
+              <ProductCard
+                className="hover:scale-[1.1] transition-transform"
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        )}
+        <Pagination className="mt-4">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious href="#" />
@@ -85,7 +63,9 @@ export function ProductsPage() {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div>
-    </section>
+      </section>
+
+      <LoginDialog open={isOpenLogin} onOpenChange={setIsOpenLogin} />
+    </>
   );
 }

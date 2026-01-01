@@ -14,7 +14,7 @@ import { Link } from '@tanstack/react-router';
 
 export function Login() {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="border-none shadow-none">
       <CardHeader>
         <CardTitle>Увійти</CardTitle>
         <CardDescription>

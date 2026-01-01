@@ -27,7 +27,7 @@ export function Counter({
   };
 
   return (
-    <div className="flex items-center rounded-md border bg-background">
+    <div className="flex items-center border bg-background">
       <Button
         variant="ghost"
         size="icon"
