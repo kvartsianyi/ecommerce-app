@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Toaster } from 'sonner';
 
 import '@fontsource/geist/400.css';
 import '@fontsource/geist/500.css';
@@ -19,5 +20,6 @@ createRoot(document.getElementById('root')!).render(
     <Providers>
       <App />
     </Providers>
+    <Toaster position="top-right" richColors />
   </StrictMode>
 );

@@ -1,45 +1,58 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-type RegisterModalProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onRegister: (name: string, email: string, password: string) => void
-  onSwitchToLogin: () => void
-}
+type RegisterDialogProps = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onRegister: (name: string, email: string, password: string) => void;
+  onSwitchToLogin: () => void;
+};
 
-export function RegisterModal({ open, onOpenChange, onRegister, onSwitchToLogin }: RegisterModalProps) {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+export function RegisterDialog({
+  open,
+  onOpenChange,
+  onRegister,
+  onSwitchToLogin,
+}: RegisterDialogProps) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Паролі не співпадають")
-      return
+      alert('Паролі не співпадають');
+      return;
     }
-    onRegister(name, email, password)
-    setName("")
-    setEmail("")
-    setPassword("")
-    setConfirmPassword("")
-  }
+    onRegister(name, email, password);
+    setName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Реєстрація</DialogTitle>
-          <DialogDescription>Створіть обліковий запис, щоб замовляти піцу</DialogDescription>
+          <DialogDescription>
+            Створіть обліковий запис, щоб замовляти піцу
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -90,13 +103,20 @@ export function RegisterModal({ open, onOpenChange, onRegister, onSwitchToLogin 
             Зареєструватися
           </Button>
           <div className="text-center text-sm">
-            <span className="text-muted-foreground">Вже є обліковий запис? </span>
-            <Button type="button" variant="link" className="cursor-pointer p-0" onClick={onSwitchToLogin}>
+            <span className="text-muted-foreground">
+              Вже є обліковий запис?{' '}
+            </span>
+            <Button
+              type="button"
+              variant="link"
+              className="cursor-pointer p-0"
+              onClick={onSwitchToLogin}
+            >
               Увійти
             </Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 type HeaderProps = {
-  isLoggedIn: boolean;
+  isAuthenticated: boolean;
   userName: string;
   onLoginClick: () => void;
   onRegisterClick: () => void;
@@ -19,7 +19,7 @@ type HeaderProps = {
 };
 
 export function Header({
-  isLoggedIn,
+  isAuthenticated,
   userName,
   onLoginClick,
   onRegisterClick,
@@ -52,7 +52,7 @@ export function Header({
             )}
           </Button>
 
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">

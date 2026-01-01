@@ -1,27 +1,22 @@
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
+import type { LoginBody } from '@/types/auth';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/Hero';
 import { Menu } from '@/components/Menu';
-import { OrderModal } from '@/components/modals/order-modal';
-import { Cart } from '@/components/cart';
-import { RegisterModal } from '@/components/modals/register-modal';
-import { LoginModal } from '@/components/modals/login-modal';
-
-export type Pizza = {
-  id: string;
-  name: string;
-  nameUk: string;
-  description: string;
-  descriptionUk: string;
-  price: number;
-  image?: string;
-  category: string;
-};
+import { OrderDialog } from '@/components/dialogs/OrderDialog';
+import { Cart } from '@/components/Cart';
+import { RegisterDialog } from '@/components/dialogs/RegisterDialog';
+import { LoginDialog } from '@/components/dialogs/LoginDialog';
+import { authApi } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
+import type { Pizza } from '@/types/product';
 
 export type CartItem = {
-  id: string;
+  id: number;
   title: string;
   picture: string;
   price: number;
@@ -34,8 +29,8 @@ export function Page() {
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState('Ivan');
+
+  const { user, isAuthenticated, login, logout } = useAuth();
 
   const addToCart = (pizza: Pizza, quantity = 1) => {
     setCart((prev) => {
@@ -70,24 +65,31 @@ export function Page() {
     setCart([]);
   };
 
-  const handleLogin = (email: string, password: string) => {
-    console.log('Login:', email, password);
-    setIsLoggedIn(true);
-    setUserName(email.split('@')[0]);
-    setIsLoginOpen(false);
-  };
+  const loginMutation = useMutation({
+    mutationFn: (data: LoginBody) => authApi.login(data),
+    onSuccess: async ({ data: tokens }) => {
+      setIsLoginOpen(false);
+
+      await login(tokens);
+    },
+    onError: () => {
+      toast.error('Помилка входу', {
+        description: 'Невірний email або пароль.',
+      });
+    },
+  });
+
+  const handleLogin = (credentials: LoginBody) =>
+    loginMutation.mutate(credentials);
 
   const handleRegister = (name: string, email: string, password: string) => {
     console.log('Register:', name, email, password);
-    setIsLoggedIn(true);
-    setUserName(name);
     setIsRegisterOpen(false);
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserName('');
     clearCart();
+    logout();
   };
 
   const handleCheckout = () => {
@@ -100,8 +102,8 @@ export function Page() {
   return (
     <div className="min-h-screen">
       <Header
-        isLoggedIn={isLoggedIn}
-        userName={userName}
+        isAuthenticated={isAuthenticated}
+        userName={user?.email || ''}
         onLoginClick={() => setIsLoginOpen(true)}
         onRegisterClick={() => setIsRegisterOpen(true)}
         onLogout={handleLogout}
@@ -111,8 +113,9 @@ export function Page() {
       <Hero />
       <Menu onAddToCart={addToCart} />
 
-      <LoginModal
+      <LoginDialog
         open={isLoginOpen}
+        isPendingSubmit={loginMutation.isPending}
         onOpenChange={setIsLoginOpen}
         onLogin={handleLogin}
         onSwitchToRegister={() => {
@@ -121,7 +124,7 @@ export function Page() {
         }}
       />
 
-      <RegisterModal
+      <RegisterDialog
         open={isRegisterOpen}
         onOpenChange={setIsRegisterOpen}
         onRegister={handleRegister}
@@ -140,12 +143,12 @@ export function Page() {
         onCheckout={handleCheckout}
       />
 
-      <OrderModal
+      <OrderDialog
         open={isOrderOpen}
         onOpenChange={setIsOrderOpen}
         cart={cart}
         onOrderComplete={clearCart}
-        isLoggedIn={isLoggedIn}
+        isAuthenticated={isAuthenticated}
         onLoginRequired={() => {
           setIsOrderOpen(false);
           setIsLoginOpen(true);

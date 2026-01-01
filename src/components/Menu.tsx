@@ -1,24 +1,11 @@
 import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 
+import type { Pizza } from '@/types/product';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
-import { fetchProducts } from '@/lib/api';
-import type { Pizza } from '@/app/page';
-
-// const pizzas = [
-//   {
-//     id: '1',
-//     name: 'Margherita',
-//     nameUk: 'Маргарита',
-//     description: 'Tomato sauce, mozzarella, basil',
-//     descriptionUk: 'Томатний соус, моцарела, базилік',
-//     price: 180,
-//     image: '/margherita-pizza.jpg',
-//     category: 'classic',
-//   },
-// ];
+import { productsApi } from '@/lib/api';
 
 const categories = [
   { id: 'all', nameUk: 'Всі' },
@@ -34,23 +21,18 @@ type MenuProps = {
 
 export function Menu({ onAddToCart }: MenuProps) {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [quantities, setQuantities] = useState<Record<number, number>>({});
 
-  // const filteredPizzas =
-  //   selectedCategory === 'all'
-  //     ? pizzas
-  //     : pizzas.filter((pizza) => pizza.category === selectedCategory);
+  const getQuantity = (pizzaId: number) => quantities[pizzaId] || 1;
 
-  const getQuantity = (pizzaId: string) => quantities[pizzaId] || 1;
-
-  const incrementQuantity = (pizzaId: string) => {
+  const incrementQuantity = (pizzaId: number) => {
     setQuantities((prev) => ({
       ...prev,
       [pizzaId]: (prev[pizzaId] || 1) + 1,
     }));
   };
 
-  const decrementQuantity = (pizzaId: string) => {
+  const decrementQuantity = (pizzaId: number) => {
     setQuantities((prev) => ({
       ...prev,
       [pizzaId]: Math.max(1, (prev[pizzaId] || 1) - 1),
@@ -66,15 +48,12 @@ export function Menu({ onAddToCart }: MenuProps) {
     }));
   };
 
-  const initialFetchProducts = { data: [] };
+  const initialProducts = { data: [] };
 
-  const { data: { data: pizzas = [] } = initialFetchProducts, isPending } =
-    useQuery({
-      queryKey: ['products'],
-      queryFn: fetchProducts,
-    });
-
-  console.log(pizzas);
+  const { data: { data: pizzas } = initialProducts } = useQuery({
+    queryKey: ['products'],
+    queryFn: productsApi.fetchProducts,
+  });
 
   return (
     <section id="menu" className="py-16 md:py-24">
@@ -105,11 +84,7 @@ export function Menu({ onAddToCart }: MenuProps) {
             <Card key={pizza.id} className="flex flex-col overflow-hidden py-0">
               <div className="aspect-square cursor-pointer overflow-hidden">
                 <img
-                  src={
-                    pizza.picture ||
-                    '/pepperoni-pizza.png' ||
-                    '/placeholder.svg'
-                  }
+                  src={pizza.picture ?? '/placeholder.svg'}
                   alt={pizza.title}
                   className="h-full w-full object-cover transition-transform hover:scale-105"
                 />

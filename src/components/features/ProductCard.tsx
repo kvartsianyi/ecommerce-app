@@ -11,7 +11,7 @@ import {
 } from '../ui/card';
 import { Button } from '../ui/button';
 import PizzaImage from '@/assets/pizza.png';
-import type { Product } from '@/types/product';
+import type { Pizza } from '@/types/product';
 import { Counter } from '../Counter';
 import { cn } from '@/lib/utils';
 
@@ -20,7 +20,7 @@ export function ProductCard({
   product,
 }: {
   className?: string;
-  product: Product;
+  product: Pizza;
 }) {
   const [quantity, setQuantity] = useState(1);
 

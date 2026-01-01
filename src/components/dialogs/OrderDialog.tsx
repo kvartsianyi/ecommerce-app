@@ -15,23 +15,23 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import type { CartItem } from '@/app/page';
 
-type OrderModalProps = {
+type OrderDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   cart: CartItem[];
   onOrderComplete: () => void;
-  isLoggedIn: boolean;
+  isAuthenticated: boolean;
   onLoginRequired: () => void;
 };
 
-export function OrderModal({
+export function OrderDialog({
   open,
   onOpenChange,
   cart,
   onOrderComplete,
-  isLoggedIn,
+  isAuthenticated,
   onLoginRequired,
-}: OrderModalProps) {
+}: OrderDialogProps) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
@@ -43,7 +43,7 @@ export function OrderModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       onLoginRequired();
       return;
     }
