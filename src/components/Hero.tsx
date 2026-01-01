@@ -21,7 +21,7 @@ export function Hero() {
             ваших дверей
           </p>
           <div className="mt-10">
-            <a href="#menu" className="cursor-pointer">
+            <a href="#menu">
               <button className="rounded-lg bg-primary px-8 py-4 text-lg font-semibold text-primary-foreground transition-all hover:bg-primary/90">
                 Переглянути меню
               </button>

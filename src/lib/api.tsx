@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 import type { Pizza } from '@/types/product';
-import type { LoginBody, TokenPair } from '@/types/auth';
+import type { LoginBody, RegistrationBody, TokenPair } from '@/types/auth';
 import tokenManager from './tokenManager';
 import type { User } from '@/types/user';
+import { normalizeAxiosError } from './utils';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -47,7 +48,8 @@ api.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-    return Promise.reject(error);
+
+    return Promise.reject(normalizeAxiosError(error));
   }
 );
 
@@ -66,6 +68,8 @@ type ApiResponse<T> = {
 export const authApi = {
   login: async (data: LoginBody): Promise<ApiResponse<TokenPair>> =>
     api.post('/auth/login', data),
+  register: async (data: RegistrationBody): Promise<ApiResponse<User>> =>
+    api.post('/users', data),
   refresh: async (refreshToken: string): Promise<ApiResponse<TokenPair>> =>
     api.post(
       '/auth/refresh',

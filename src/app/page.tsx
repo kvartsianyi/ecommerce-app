@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import type { LoginBody } from '@/types/auth';
+import type {
+  LoginBody,
+  RegistrationBody,
+  RegistrationForm,
+} from '@/types/auth';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/Hero';
@@ -82,9 +86,30 @@ export function Page() {
   const handleLogin = (credentials: LoginBody) =>
     loginMutation.mutate(credentials);
 
-  const handleRegister = (name: string, email: string, password: string) => {
-    console.log('Register:', name, email, password);
-    setIsRegisterOpen(false);
+  const registrationMutation = useMutation({
+    mutationFn: (data: RegistrationBody) => authApi.register(data),
+    onSuccess: async () => {
+      setIsRegisterOpen(false);
+
+      toast.success('Реєстрація успішна', {
+        description:
+          'Перевірте вашу електронну пошту для підтвердження облікового запису.',
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error('Помилка реєстрації', {
+        description: error.message,
+      });
+    },
+  });
+
+  const handleRegister = (userDetails: RegistrationForm) => {
+    console.log('Register:', userDetails);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword, ...restUserDetails } = userDetails;
+
+    registrationMutation.mutate(restUserDetails);
   };
 
   const handleLogout = () => {
@@ -126,6 +151,7 @@ export function Page() {
 
       <RegisterDialog
         open={isRegisterOpen}
+        isPendingSubmit={registrationMutation.isPending}
         onOpenChange={setIsRegisterOpen}
         onRegister={handleRegister}
         onSwitchToLogin={() => {

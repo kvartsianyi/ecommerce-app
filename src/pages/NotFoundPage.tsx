@@ -8,7 +8,7 @@ export function NotFoundPage() {
     <section className="h-screen flex  items-center justify-center flex-col gap-4">
       <p className="text-3xl font-bold">Помилка 404</p>
       <p className="text-3xl">Контент не знайдень</p>
-      <Button variant="link" className="cursor-pointer" asChild>
+      <Button variant="link" asChild>
         <Link to="/">
           <ArrowLeft /> Повернутись додому
         </Link>

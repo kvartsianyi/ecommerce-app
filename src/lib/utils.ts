@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -12,4 +13,28 @@ export function sleep(ms: number): Promise<void> {
 export async function withMinDelay<T>(task: Promise<T>, ms = 300): Promise<T> {
   const [result] = await Promise.all([task, sleep(ms)]);
   return result;
+}
+
+export function getAxiosErrorMessage(
+  error: unknown,
+  fallback = 'Щось пішло не так. Спробуйте ще раз.'
+): string {
+  if (error instanceof AxiosError) {
+    return error.response?.data?.error?.message || fallback;
+  }
+
+  return fallback;
+}
+
+export function normalizeAxiosError(error: unknown) {
+  const message = getAxiosErrorMessage(error);
+
+  if (error instanceof AxiosError) {
+    return {
+      ...error,
+      message,
+    };
+  }
+
+  return { message };
 }
