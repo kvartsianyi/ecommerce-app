@@ -76,9 +76,9 @@ export function Page() {
 
       await login(tokens);
     },
-    onError: () => {
+    onError: (err) => {
       toast.error('Помилка входу', {
-        description: 'Невірний email або пароль.',
+        description: err.message,
       });
     },
   });
@@ -96,10 +96,9 @@ export function Page() {
           'Перевірте вашу електронну пошту для підтвердження облікового запису.',
       });
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (err) => {
       toast.error('Помилка реєстрації', {
-        description: error.message,
+        description: err.message,
       });
     },
   });
