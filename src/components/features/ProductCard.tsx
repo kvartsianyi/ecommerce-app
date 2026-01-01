@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingBasket } from 'lucide-react';
 
 import {
   Card,
@@ -11,7 +11,7 @@ import {
 } from '../ui/card';
 import { Button } from '../ui/button';
 import PizzaImage from '@/assets/pizza.png';
-import type { Product } from '@/types/product';
+import type { Pizza } from '@/types/product';
 import { Counter } from '../Counter';
 import { cn } from '@/lib/utils';
 
@@ -20,12 +20,15 @@ export function ProductCard({
   product,
 }: {
   className?: string;
-  product: Product;
+  product: Pizza;
 }) {
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <Card className={cn('flex flex-col', className)} key={product.id}>
+    <Card
+      className={cn('flex flex-col rounded-none', className)}
+      key={product.id}
+    >
       <CardHeader>
         <div className="relative">
           <img
@@ -38,22 +41,23 @@ export function ProductCard({
         <CardTitle className="text-3xl font-bold">{product.title}</CardTitle>
       </CardHeader>
       <CardContent className="h-full">
-        <CardDescription>
-          <p className="mb-4 text-lg text-foreground">
-            Ціна:
-            <span className="text-2xl ml-2 font-semibold">
-              {Math.round(product.price / 100)}грн
-            </span>
-            <span className="text-base text-muted-foreground"> / 350гр</span>
-          </p>
-          <p>{product.description}</p>
+        <CardDescription className="text-base">
+          {product.description}
         </CardDescription>
       </CardContent>
-      <CardFooter className="flex gap-4">
-        <Counter value={quantity} onChange={setQuantity} max={99} />
-        <Button className="flex-1 cursor-pointer">
-          <ShoppingCart />В корзину
-        </Button>
+      <CardFooter className="flex flex-col items-start">
+        <p className="text-lg text-foreground">
+          <span className="text-2xl font-semibold">
+            {Math.round(product.price / 100)}грн
+          </span>
+          <span className="text-base text-muted-foreground"> / 350гр</span>
+        </p>
+        <div className="flex w-full gap-4 pt-4">
+          <Counter value={quantity} onChange={setQuantity} max={99} />
+          <Button className="flex-1 cursor-pointer text-base font-semibold">
+            В кошик <ShoppingBasket className="size-5" />
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
