@@ -104,7 +104,6 @@ export function Page() {
   });
 
   const handleRegister = (userDetails: RegistrationForm) => {
-    console.log('Register:', userDetails);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword, ...restUserDetails } = userDetails;
 

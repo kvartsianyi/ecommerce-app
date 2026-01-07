@@ -89,4 +89,6 @@ export const productsApi = {
 
 export const usersApi = {
   fetchMe: async (): Promise<ApiResponse<User>> => api.get('/users/me'),
+  emailVerification: async (token: string): Promise<ApiResponse<TokenPair>> =>
+    api.post('/users/verify-email', { token }),
 };
