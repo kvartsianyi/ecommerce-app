@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
 
 import type { Pizza } from '@/types/product';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
 import { productsApi } from '@/lib/api';
+import { Counter } from '@/components/Counter';
 
 const categories = [
   { id: 'all', nameUk: 'Всі' },
@@ -25,17 +25,10 @@ export function Menu({ onAddToCart }: MenuProps) {
 
   const getQuantity = (pizzaId: number) => quantities[pizzaId] || 1;
 
-  const incrementQuantity = (pizzaId: number) => {
+  const changeQuantity = (pizzaId: number, quantity: number) => {
     setQuantities((prev) => ({
       ...prev,
-      [pizzaId]: (prev[pizzaId] || 1) + 1,
-    }));
-  };
-
-  const decrementQuantity = (pizzaId: number) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [pizzaId]: Math.max(1, (prev[pizzaId] || 1) - 1),
+      [pizzaId]: quantity,
     }));
   };
 
@@ -99,37 +92,18 @@ export function Menu({ onAddToCart }: MenuProps) {
                   {pizza.price / 100} ₴
                 </p>
               </CardContent>
-              <CardFooter className="p-4 pt-0">
-                <div className="flex w-full items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="h-9 w-9 bg-transparent"
-                      onClick={() => decrementQuantity(pizza.id)}
-                      disabled={getQuantity(pizza.id) <= 1}
-                    >
-                      <Minus className="h-4 w-4" />
-                    </Button>
-                    <span className="w-8 text-center font-medium">
-                      {getQuantity(pizza.id)}
-                    </span>
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="h-9 w-9 bg-transparent"
-                      onClick={() => incrementQuantity(pizza.id)}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <Button
-                    className="flex-1"
-                    onClick={() => handleAddToCart(pizza)}
-                  >
-                    Додати в кошик
-                  </Button>
-                </div>
+              <CardFooter className="p-4 pt-0 gap-2">
+                <Counter
+                  max={999}
+                  value={getQuantity(pizza.id)}
+                  onChange={(value) => changeQuantity(pizza.id, value)}
+                />
+                <Button
+                  className="flex-1"
+                  onClick={() => handleAddToCart(pizza)}
+                >
+                  Додати в кошик
+                </Button>
               </CardFooter>
             </Card>
           ))}
