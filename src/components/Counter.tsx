@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Minus, Plus } from 'lucide-react';
+
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 interface CounterProps {
   value: number;
@@ -27,30 +27,30 @@ export function Counter({
   };
 
   return (
-    <div className="flex items-center border bg-background">
+    <div className="flex items-center">
       <Button
-        variant="ghost"
+        variant="outline"
         size="icon"
-        className="h-9 w-9 rounded-none border-r cursor-pointer"
+        className="h-9 w-9"
         onClick={decrease}
         disabled={value <= min}
       >
-        <Minus className="h-4 w-4 text-primary" />
+        <Minus className="h-4 w-4" />
       </Button>
       <Input
         type="text"
         value={value}
         onChange={handleChange}
-        className="w-14 h-9 rounded-none text-center font-bold border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="w-14 h-9 rounded-none shadow-none text-center font-bold border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
       />
       <Button
-        variant="ghost"
+        variant="outline"
         size="icon"
-        className="h-9 w-9 rounded-none border-l cursor-pointer"
+        className="h-9 w-9"
         onClick={increase}
         disabled={value >= max}
       >
-        <Plus className="h-4 w-4 text-primary" />
+        <Plus className="h-4 w-4" />
       </Button>
     </div>
   );
