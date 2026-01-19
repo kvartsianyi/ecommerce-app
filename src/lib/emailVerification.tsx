@@ -12,7 +12,7 @@ export function getEmailVerificationSettings(
 ) {
   if (!token) {
     return {
-      icon: <MailWarning className="mx-auto h-10 w-10 text-destructive" />,
+      icon: <MailWarning className="mx-auto size-8 text-destructive" />,
       title: 'Невірний запит',
       description: 'Відсутній токен підтвердження електронної пошти.',
     };
@@ -21,7 +21,7 @@ export function getEmailVerificationSettings(
   switch (status) {
     case 'error':
       return {
-        icon: <MailWarning className="mx-auto h-10 w-10 text-destructive" />,
+        icon: <MailWarning className="mx-auto size-8 text-destructive" />,
         title: 'Помилка підтвердження',
         description:
           ERROR_MESSAGES[errorMessage as keyof typeof ERROR_MESSAGES] ??
@@ -29,7 +29,7 @@ export function getEmailVerificationSettings(
       };
     case 'success':
       return {
-        icon: <CheckCircle2 className="mx-auto h-10 w-10 text-green-500" />,
+        icon: <CheckCircle2 className="mx-auto size-8 text-green-500" />,
         title: 'Email підтверджено',
         description: 'Ви успішно підтвердили свою електронну адресу.',
       };
@@ -37,7 +37,7 @@ export function getEmailVerificationSettings(
     case 'idle':
     default:
       return {
-        icon: <Spinner className="w-10 h-10 mx-auto" />,
+        icon: <Spinner className="size-8 mx-auto" />,
         title: 'Підтвердження email',
         description: 'Зачекайте, ми перевіряємо вашу електронну адресу.',
       };

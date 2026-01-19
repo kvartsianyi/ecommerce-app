@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import type { Pizza } from '@/types/product';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
 import { productsApi } from '@/lib/api';
-import { Counter } from '@/components/Counter';
+import { PizzaCard } from './features/PizzaCard';
+import { Spinner } from './ui/spinner';
 
 const categories = [
   { id: 'all', nameUk: 'Всі' },
@@ -43,7 +43,7 @@ export function Menu({ onAddToCart }: MenuProps) {
 
   const initialProducts = { data: [] };
 
-  const { data: { data: pizzas } = initialProducts } = useQuery({
+  const { data: { data: pizzas } = initialProducts, isPending } = useQuery({
     queryKey: ['products'],
     queryFn: productsApi.fetchProducts,
   });
@@ -72,40 +72,21 @@ export function Menu({ onAddToCart }: MenuProps) {
           ))}
         </div>
 
+        {isPending && (
+          <div className="flex justify-center pt-4">
+            <Spinner className="size-8" />
+          </div>
+        )}
+
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {pizzas.map((pizza) => (
-            <Card key={pizza.id} className="flex flex-col overflow-hidden py-0">
-              <div className="aspect-square cursor-pointer overflow-hidden">
-                <img
-                  src={pizza.picture ?? '/placeholder.svg'}
-                  alt={pizza.title}
-                  className="h-full w-full object-cover transition-transform hover:scale-105"
-                />
-              </div>
-              <CardContent className="flex flex-1 flex-col p-4">
-                <h3 className="text-lg font-semibold">{pizza.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {pizza.description}
-                </p>
-                <div className="mt-auto flex-1" />
-                <p className="mt-3 text-xl font-bold text-primary">
-                  {pizza.price / 100} ₴
-                </p>
-              </CardContent>
-              <CardFooter className="p-4 pt-0 gap-2">
-                <Counter
-                  max={999}
-                  value={getQuantity(pizza.id)}
-                  onChange={(value) => changeQuantity(pizza.id, value)}
-                />
-                <Button
-                  className="flex-1"
-                  onClick={() => handleAddToCart(pizza)}
-                >
-                  Додати в кошик
-                </Button>
-              </CardFooter>
-            </Card>
+            <PizzaCard
+              key={pizza.id}
+              pizza={pizza}
+              quantity={getQuantity(pizza.id)}
+              OnQuantityChange={changeQuantity}
+              OnAddToCart={handleAddToCart}
+            />
           ))}
         </div>
       </div>

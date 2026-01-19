@@ -11,7 +11,7 @@ export function FullScreenSpinner({ visible }: { visible: boolean }) {
           : 'opacity-0 pointer-events-none'
       )}
     >
-      <Spinner className="w-12 h-12" />
+      <Spinner className="size-12" />
     </div>
   );
 }
