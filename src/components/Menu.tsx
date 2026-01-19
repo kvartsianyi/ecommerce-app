@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { productsApi } from '@/lib/api';
 import { PizzaCard } from './features/PizzaCard';
+import { Spinner } from './ui/spinner';
 
 const categories = [
   { id: 'all', nameUk: 'Всі' },
@@ -42,7 +43,7 @@ export function Menu({ onAddToCart }: MenuProps) {
 
   const initialProducts = { data: [] };
 
-  const { data: { data: pizzas } = initialProducts } = useQuery({
+  const { data: { data: pizzas } = initialProducts, isPending } = useQuery({
     queryKey: ['products'],
     queryFn: productsApi.fetchProducts,
   });
@@ -70,6 +71,12 @@ export function Menu({ onAddToCart }: MenuProps) {
             </Button>
           ))}
         </div>
+
+        {isPending && (
+          <div className="flex justify-center pt-4">
+            <Spinner className="size-8" />
+          </div>
+        )}
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {pizzas.map((pizza) => (
