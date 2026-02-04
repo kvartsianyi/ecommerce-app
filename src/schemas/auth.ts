@@ -1,6 +1,7 @@
 import * as z from 'zod';
 
 const emailValidator = z.email('Невірний формат електронної пошти.');
+const phoneValidator = z.string().regex(/^\d{9}$/, 'Невірний номер телефону');
 const passwordValidator = z
   .string()
   .min(8, 'Пароль повинен містити не менше 8 символів.')
@@ -21,6 +22,7 @@ export const registrationSchema = z
       .string()
       .min(3, 'Прізвище повинно містити не менше 3 символів.')
       .max(30, 'Прізвище повинно містити не більше 30 символів.'),
+    phone: phoneValidator,
     email: emailValidator,
     password: passwordValidator,
     confirmPassword: passwordValidator,

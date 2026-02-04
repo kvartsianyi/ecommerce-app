@@ -15,6 +15,7 @@ export type LoginBody = {
 export type RegistrationBody = {
   firstName: string;
   lastName: string;
+  phone: string;
   email: string;
   password: string;
 };

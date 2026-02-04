@@ -10,9 +10,13 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { registrationSchema } from '@/schemas/auth';
-import { FormField } from '../FormField';
+import { FormField } from '../ui/FormField';
 import { Spinner } from '../ui/spinner';
 import type { RegistrationForm } from '@/types/auth';
+import { Input } from '../ui/input';
+import { FieldGroup } from '../ui/field';
+import { PhoneInput } from '../ui/PhoneInput';
+import { normalizePhoneNumber } from '@/lib/utils';
 
 type RegisterDialogProps = {
   open: boolean;
@@ -33,14 +37,19 @@ export function RegisterDialog({
     defaultValues: {
       firstName: '',
       lastName: '',
+      phone: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
     validators: {
-      onChange: registrationSchema,
+      onSubmit: registrationSchema,
     },
-    onSubmit: async ({ value }) => onRegister(value),
+    onSubmit: async ({ value }) =>
+      onRegister({
+        ...value,
+        phone: normalizePhoneNumber(value.phone),
+      }),
   });
 
   useEffect(() => {
@@ -49,11 +58,11 @@ export function RegisterDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Реєстрація</DialogTitle>
+      <DialogContent className="sm:max-w-md gap-8">
+        <DialogHeader className=" sm:text-center">
+          <DialogTitle className="text-3xl">Реєстрація</DialogTitle>
           <DialogDescription>
-            Створіть обліковий запис, щоб замовляти піцу
+            Створіть аккаунт для швидкого замовлення
           </DialogDescription>
         </DialogHeader>
         <form
@@ -63,88 +72,163 @@ export function RegisterDialog({
           }}
           className="space-y-4"
         >
-          <div className="flex gap-4 space-y-2">
+          <FieldGroup>
+            <div className="grid grid-cols-2 gap-4">
+              <form.Field
+                name="firstName"
+                children={(field) => (
+                  <FormField
+                    field={field}
+                    label="Ім'я"
+                    required={true}
+                    children={(control) => (
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={control.isInvalid}
+                        placeholder="Олександр"
+                      />
+                    )}
+                  />
+                )}
+              />
+              <form.Field
+                name="lastName"
+                children={(field) => (
+                  <FormField
+                    field={field}
+                    label="Прізвище"
+                    required={true}
+                    children={(control) => (
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={control.isInvalid}
+                        placeholder="Шевченко"
+                      />
+                    )}
+                  />
+                )}
+              />
+            </div>
             <form.Field
-              name="firstName"
+              name="phone"
               children={(field) => (
                 <FormField
                   field={field}
-                  label="Ім'я"
-                  placeholder="Ім'я"
+                  label="Номер телефону"
                   required={true}
+                  children={(control) => (
+                    <PhoneInput
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      onBlur={field.handleBlur}
+                      placeholder="(XX) XXX XX XX"
+                      aria-invalid={control.isInvalid}
+                      maxLength={9}
+                      required={true}
+                    />
+                  )}
                 />
               )}
             />
-            <form.Field
-              name="lastName"
-              children={(field) => (
-                <FormField
-                  field={field}
-                  label="Прізвище"
-                  placeholder="Прізвище"
-                  required={true}
-                />
-              )}
-            />
-          </div>
-          <div className="space-y-2">
             <form.Field
               name="email"
               children={(field) => (
                 <FormField
                   field={field}
-                  type="email"
                   label="Електронна пошта"
-                  placeholder="your@email.com"
                   required={true}
+                  children={(control) => (
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="email"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={control.isInvalid}
+                      placeholder="example@email.com"
+                    />
+                  )}
                 />
               )}
             />
-          </div>
-          <div className="space-y-2">
             <form.Field
               name="password"
               children={(field) => (
                 <FormField
                   field={field}
-                  type="password"
                   label="Пароль"
-                  placeholder="••••••••"
                   required={true}
+                  children={(control) => (
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="password"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={control.isInvalid}
+                      placeholder="●●●●●●●●"
+                    />
+                  )}
                 />
               )}
             />
-          </div>
-          <div className="space-y-2">
             <form.Field
               name="confirmPassword"
               children={(field) => (
                 <FormField
                   field={field}
-                  type="password"
                   label="Підтвердіть пароль"
-                  placeholder="••••••••"
                   required={true}
+                  children={(control) => (
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="password"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={control.isInvalid}
+                      placeholder="●●●●●●●●"
+                    />
+                  )}
                 />
               )}
             />
-          </div>
-          <Button type="submit" className="w-full" onClick={form.handleSubmit}>
-            {isPendingSubmit && <Spinner />} Зареєструватися
-          </Button>
-          <div className="text-center text-sm">
-            <span className="text-muted-foreground">
-              Вже є обліковий запис?{' '}
-            </span>
             <Button
-              type="button"
-              variant="link"
-              className="p-0"
-              onClick={onSwitchToLogin}
+              type="submit"
+              className="w-full"
+              onClick={form.handleSubmit}
+              disabled={isPendingSubmit}
             >
-              Увійти
+              {isPendingSubmit && <Spinner data-icon="inline-start" />}{' '}
+              Зареєструватися
             </Button>
-          </div>
+            <div className="text-center text-sm">
+              <span className="text-muted-foreground">
+                Вже є обліковий запис?{' '}
+              </span>
+              <Button
+                type="button"
+                variant="link"
+                className="p-0"
+                onClick={onSwitchToLogin}
+              >
+                Увійти
+              </Button>
+            </div>
+          </FieldGroup>
         </form>
       </DialogContent>
     </Dialog>

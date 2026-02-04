@@ -1,3 +1,5 @@
+export const COUNTRY_CODE_UA = '+380';
+
 export const SOMETHING_WENT_WRONG = 'Щось пішло не так. Спробуйте ще раз.';
 
 export const ERROR_KEYS = {

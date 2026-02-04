@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { loginSchema } from '@/schemas/auth';
 import { Spinner } from '../ui/spinner';
-import { FormField } from '../FormField';
+import { FormField } from '../ui/FormField';
 
 type LoginDialogProps = {
   open: boolean;
@@ -89,7 +89,7 @@ export function LoginDialog({
             />
           </div>
           <Button type="submit" className="w-full" onClick={form.handleSubmit}>
-            {isPendingSubmit && <Spinner />} Увійти
+            {isPendingSubmit && <Spinner data-icon="inline-start" />} Увійти
           </Button>
           <div className="text-center text-sm">
             <span className="text-muted-foreground">

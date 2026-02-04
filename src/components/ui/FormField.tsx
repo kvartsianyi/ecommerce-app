@@ -1,5 +1,4 @@
-import { Input } from '@/components/ui/input';
-import { Field, FieldError, FieldLabel } from './ui/field';
+import { Field, FieldDescription, FieldError, FieldLabel } from './field';
 
 type FieldLike = {
   name: string;
@@ -8,6 +7,8 @@ type FieldLike = {
     meta: {
       isTouched: boolean;
       isValid: boolean;
+      isDirty: boolean;
+      isBlurred: boolean;
       errors: Array<{ message?: string } | undefined>;
     };
   };
@@ -15,39 +16,37 @@ type FieldLike = {
   handleBlur: () => void;
 };
 
+type FormFieldChildrenProps = { isInvalid: boolean };
+
 type FormFieldProps = {
   field: FieldLike;
-  label: string;
-  type?: string;
-  placeholder?: string;
+  label?: string;
   required?: boolean;
+  description?: string;
+  children: (props: FormFieldChildrenProps) => React.ReactNode;
 };
 
 export function FormField({
   field,
   label,
-  type = 'text',
-  placeholder = '',
   required = true,
-  ...props
+  description,
+  children,
 }: FormFieldProps) {
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
   return (
     <Field>
-      <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
-      <Input
-        type={type}
-        id={field.name}
-        name={field.name}
-        placeholder={placeholder}
-        value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.value)}
-        onBlur={field.handleBlur}
-        aria-invalid={isInvalid}
-        required={required}
-        {...props}
-      />
+      {label && (
+        <FieldLabel className="gap-1" htmlFor={field.name}>
+          {label}
+          {required && <span className="text-destructive">*</span>}
+        </FieldLabel>
+      )}
+
+      {children({ isInvalid })}
+
+      {description && <FieldDescription>{description}</FieldDescription>}
       {isInvalid && <FieldError errors={field.state.meta.errors} />}
     </Field>
   );
