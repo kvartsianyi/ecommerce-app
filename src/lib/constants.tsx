@@ -1,3 +1,20 @@
+export const COUNTRY_CODE_UA = '+380';
+
+export const UA_CODES = [
+  '50',
+  '63',
+  '66',
+  '67',
+  '68',
+  '73',
+  '93',
+  '95',
+  '96',
+  '97',
+  '98',
+  '99',
+];
+
 export const SOMETHING_WENT_WRONG = 'Щось пішло не так. Спробуйте ще раз.';
 
 export const ERROR_KEYS = {

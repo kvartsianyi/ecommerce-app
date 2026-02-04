@@ -1,6 +1,14 @@
 import * as z from 'zod';
 
+import { UA_CODES } from '@/lib/constants';
+
 const emailValidator = z.email('Невірний формат електронної пошти.');
+const phoneValidator = z
+  .string()
+  .regex(/^\d{9}$/, 'Невірний номер телефону')
+  .refine((v) => UA_CODES.includes(v.slice(0, 2)), {
+    message: 'Невірний код оператора',
+  });
 const passwordValidator = z
   .string()
   .min(8, 'Пароль повинен містити не менше 8 символів.')
@@ -21,6 +29,7 @@ export const registrationSchema = z
       .string()
       .min(3, 'Прізвище повинно містити не менше 3 символів.')
       .max(30, 'Прізвище повинно містити не більше 30 символів.'),
+    phone: phoneValidator,
     email: emailValidator,
     password: passwordValidator,
     confirmPassword: passwordValidator,
