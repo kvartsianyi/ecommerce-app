@@ -1,14 +1,7 @@
 import * as z from 'zod';
 
-import { UA_CODES } from '@/lib/constants';
-
 const emailValidator = z.email('Невірний формат електронної пошти.');
-const phoneValidator = z
-  .string()
-  .regex(/^\d{9}$/, 'Невірний номер телефону')
-  .refine((v) => UA_CODES.includes(v.slice(0, 2)), {
-    message: 'Невірний код оператора',
-  });
+const phoneValidator = z.string().regex(/^\d{9}$/, 'Невірний номер телефону');
 const passwordValidator = z
   .string()
   .min(8, 'Пароль повинен містити не менше 8 символів.')

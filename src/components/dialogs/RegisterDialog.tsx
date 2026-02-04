@@ -16,6 +16,7 @@ import type { RegistrationForm } from '@/types/auth';
 import { Input } from '../ui/input';
 import { FieldGroup } from '../ui/field';
 import { PhoneInput } from '../ui/PhoneInput';
+import { normalizePhoneNumber } from '@/lib/utils';
 
 type RegisterDialogProps = {
   open: boolean;
@@ -44,7 +45,11 @@ export function RegisterDialog({
     validators: {
       onSubmit: registrationSchema,
     },
-    onSubmit: async ({ value }) => onRegister(value),
+    onSubmit: async ({ value }) =>
+      onRegister({
+        ...value,
+        phone: normalizePhoneNumber(value.phone),
+      }),
   });
 
   useEffect(() => {
@@ -128,6 +133,7 @@ export function RegisterDialog({
                       onBlur={field.handleBlur}
                       placeholder="(XX) XXX XX XX"
                       aria-invalid={control.isInvalid}
+                      maxLength={9}
                       required={true}
                     />
                   )}
