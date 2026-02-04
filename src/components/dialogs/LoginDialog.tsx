@@ -13,6 +13,9 @@ import {
 import { loginSchema } from '@/schemas/auth';
 import { Spinner } from '../ui/spinner';
 import { FormField } from '../ui/FormField';
+import { FieldGroup, FieldSeparator } from '../ui/field';
+import { Input } from '../ui/input';
+import { GoogleIcon } from '../ui/GoogleIcon';
 
 type LoginDialogProps = {
   open: boolean;
@@ -35,7 +38,7 @@ export function LoginDialog({
       password: '',
     },
     validators: {
-      onChange: loginSchema,
+      onSubmit: loginSchema,
     },
     onSubmit: async ({ value }) => onLogin(value),
   });
@@ -47,8 +50,8 @@ export function LoginDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Вхід</DialogTitle>
+        <DialogHeader className="sm:text-center">
+          <DialogTitle className="text-3xl">Вхід</DialogTitle>
           <DialogDescription>
             Увійдіть у свій обліковий запис, щоб оформити замовлення
           </DialogDescription>
@@ -60,50 +63,86 @@ export function LoginDialog({
           }}
           className="space-y-4"
         >
-          <div className="space-y-2">
+          <FieldGroup>
             <form.Field
               name="email"
               children={(field) => (
                 <FormField
                   field={field}
-                  type="email"
                   label="Електронна пошта"
-                  placeholder="your@email.com"
                   required={true}
+                  children={(control) => (
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="email"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={control.isInvalid}
+                      placeholder="your@email.com"
+                    />
+                  )}
                 />
               )}
             />
-          </div>
-          <div className="space-y-2">
             <form.Field
               name="password"
               children={(field) => (
                 <FormField
                   field={field}
-                  type="password"
                   label="Пароль"
-                  placeholder="••••••••"
                   required={true}
+                  children={(control) => (
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type="password"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={control.isInvalid}
+                      placeholder="●●●●●●●●"
+                    />
+                  )}
                 />
               )}
             />
-          </div>
-          <Button type="submit" className="w-full" onClick={form.handleSubmit}>
-            {isPendingSubmit && <Spinner data-icon="inline-start" />} Увійти
-          </Button>
-          <div className="text-center text-sm">
-            <span className="text-muted-foreground">
-              Немає облікового запису?{' '}
-            </span>
             <Button
-              type="button"
-              variant="link"
-              className="p-0"
-              onClick={onSwitchToRegister}
+              type="submit"
+              className="w-full"
+              onClick={form.handleSubmit}
+              disabled={isPendingSubmit}
             >
-              Зареєструватися
+              {isPendingSubmit && <Spinner data-icon="inline-start" />} Увійти
             </Button>
-          </div>
+            <FieldSeparator>АБО</FieldSeparator>
+            <Button
+              variant="outline"
+              className="w-full"
+              disabled={isPendingSubmit}
+            >
+              {isPendingSubmit ? (
+                <Spinner data-icon="inline-start" />
+              ) : (
+                <GoogleIcon className="w-5 h-5" />
+              )}{' '}
+              Увійти через Google
+            </Button>
+            <div className="text-center text-sm">
+              <span className="text-muted-foreground">
+                Немає облікового запису?{' '}
+              </span>
+              <Button
+                type="button"
+                variant="link"
+                className="p-0"
+                onClick={onSwitchToRegister}
+              >
+                Зареєструватися
+              </Button>
+            </div>
+          </FieldGroup>
         </form>
       </DialogContent>
     </Dialog>
