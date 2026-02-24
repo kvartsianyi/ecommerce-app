@@ -222,7 +222,7 @@ export function RegisterDialog({
               <Button
                 type="button"
                 variant="link"
-                className="p-0"
+                className="p-0 h-auto"
                 onClick={onSwitchToLogin}
               >
                 Увійти
