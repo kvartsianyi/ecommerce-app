@@ -21,6 +21,7 @@ type FormFieldChildrenProps = { isInvalid: boolean };
 type FormFieldProps = {
   field: FieldLike;
   label?: string;
+  labelAction?: React.ReactNode;
   required?: boolean;
   description?: string;
   children: (props: FormFieldChildrenProps) => React.ReactNode;
@@ -29,6 +30,7 @@ type FormFieldProps = {
 export function FormField({
   field,
   label,
+  labelAction,
   required = true,
   description,
   children,
@@ -41,6 +43,7 @@ export function FormField({
         <FieldLabel className="gap-1" htmlFor={field.name}>
           {label}
           {required && <span className="text-destructive">*</span>}
+          {labelAction && <div className="ml-auto">{labelAction}</div>}
         </FieldLabel>
       )}
 

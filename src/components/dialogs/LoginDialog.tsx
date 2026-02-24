@@ -92,6 +92,16 @@ export function LoginDialog({
                 <FormField
                   field={field}
                   label="Пароль"
+                  labelAction={
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="p-0 h-auto"
+                      onClick={onSwitchToRegister}
+                    >
+                      Забули пароль?
+                    </Button>
+                  }
                   required={true}
                   children={(control) => (
                     <Input
@@ -136,7 +146,7 @@ export function LoginDialog({
               <Button
                 type="button"
                 variant="link"
-                className="p-0"
+                className="p-0 h-auto"
                 onClick={onSwitchToRegister}
               >
                 Зареєструватися
