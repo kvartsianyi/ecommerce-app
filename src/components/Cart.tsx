@@ -8,30 +8,27 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import type { CartItem } from '@/app/page';
+import type { CartItem } from '@/types/cart';
 
 type CartProps = {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
   items: CartItem[];
-  onUpdateQuantity: (id: string, quantity: number) => void;
-  onRemove: (id: string) => void;
+  totalAmount: number;
+  onOpenChange: (open: boolean) => void;
+  onUpdateQuantity: (id: number, quantity: number) => void;
+  onRemove: (id: number) => void;
   onCheckout: () => void;
 };
 
 export function Cart({
   open,
-  onOpenChange,
   items,
+  totalAmount,
+  onOpenChange,
   onUpdateQuantity,
   onRemove,
   onCheckout,
 }: CartProps) {
-  const total = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="flex w-full flex-col sm:max-w-lg">
@@ -109,7 +106,9 @@ export function Cart({
           <SheetFooter className="flex-col gap-4">
             <div className="flex items-center justify-between border-t border-border pt-4">
               <span className="text-lg font-semibold">Всього:</span>
-              <span className="text-2xl font-bold text-primary">{total} ₴</span>
+              <span className="text-2xl font-bold text-primary">
+                {totalAmount} ₴
+              </span>
             </div>
             <Button className="w-full" size="lg" onClick={onCheckout}>
               Оформити замовлення
