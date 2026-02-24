@@ -37,6 +37,11 @@ export function Page() {
   } = useCart();
 
   const handleAddToCart = async (id: number, quantity = 1) => {
+    if (!isAuthenticated) {
+      setIsLoginOpen(true);
+      return;
+    }
+
     try {
       await addToCart(id, quantity);
       setIsCartOpen(true);
