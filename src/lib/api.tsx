@@ -5,6 +5,7 @@ import type { LoginBody, RegistrationBody, TokenPair } from '@/types/auth';
 import tokenManager from './tokenManager';
 import type { User } from '@/types/user';
 import { normalizeAxiosError } from './utils';
+import type { Cart } from '@/types/cart';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -91,4 +92,16 @@ export const usersApi = {
   fetchMe: async (): Promise<ApiResponse<User>> => api.get('/users/me'),
   emailVerification: async (token: string): Promise<ApiResponse<TokenPair>> =>
     api.post('/users/verify-email', { token }),
+};
+
+export const cartApi = {
+  fetchCart: async (): Promise<ApiResponse<Cart>> => api.get('/cart'),
+  addToCart: async (id: number, quantity: number): Promise<ApiResponse<Cart>> =>
+    api.post('/cart/items', { productId: id, quantity }),
+  updateQuantity: async (
+    id: number,
+    quantity: number
+  ): Promise<ApiResponse<Cart>> => api.patch(`/cart/items/${id}`, { quantity }),
+  removeFromCart: async (id: number): Promise<ApiResponse<void>> =>
+    api.delete(`/cart/items/${id}`),
 };

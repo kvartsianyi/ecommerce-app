@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import type { Pizza } from '@/types/product';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { productsApi } from '@/lib/api';
@@ -16,30 +15,11 @@ const categories = [
 ];
 
 type MenuProps = {
-  onAddToCart: (pizza: Pizza, quantity: number) => void;
+  onAddToCart: (id: number, quantity: number) => void;
 };
 
 export function Menu({ onAddToCart }: MenuProps) {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [quantities, setQuantities] = useState<Record<number, number>>({});
-
-  const getQuantity = (pizzaId: number) => quantities[pizzaId] || 1;
-
-  const changeQuantity = (pizzaId: number, quantity: number) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [pizzaId]: quantity,
-    }));
-  };
-
-  const handleAddToCart = (pizza: Pizza) => {
-    const quantity = getQuantity(pizza.id);
-    onAddToCart(pizza, quantity);
-    setQuantities((prev) => ({
-      ...prev,
-      [pizza.id]: 1,
-    }));
-  };
 
   const initialProducts = { data: [] };
 
@@ -80,13 +60,7 @@ export function Menu({ onAddToCart }: MenuProps) {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {pizzas.map((pizza) => (
-            <PizzaCard
-              key={pizza.id}
-              pizza={pizza}
-              quantity={getQuantity(pizza.id)}
-              OnQuantityChange={changeQuantity}
-              OnAddToCart={handleAddToCart}
-            />
+            <PizzaCard key={pizza.id} pizza={pizza} OnAddToCart={onAddToCart} />
           ))}
         </div>
       </div>

@@ -17,56 +17,53 @@ import { RegisterDialog } from '@/components/dialogs/RegisterDialog';
 import { LoginDialog } from '@/components/dialogs/LoginDialog';
 import { authApi } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
-import type { Pizza } from '@/types/product';
-
-export type CartItem = {
-  id: number;
-  title: string;
-  picture: string;
-  price: number;
-  quantity: number;
-};
+import { useCart } from '@/hooks/useCart';
 
 export function Page() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cart, setCart] = useState<CartItem[]>([]);
 
   const { user, isAuthenticated, login, logout } = useAuth();
+  const {
+    items: cartItems,
+    totalAmount,
+    fetchCart,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+  } = useCart();
 
-  const addToCart = (pizza: Pizza, quantity = 1) => {
-    setCart((prev) => {
-      const existing = prev.find((item) => item.id === pizza.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === pizza.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      return [...prev, { ...pizza, quantity }];
-    });
-    setIsCartOpen(true);
+  const handleAddToCart = async (id: number, quantity = 1) => {
+    try {
+      await addToCart(id, quantity);
+      setIsCartOpen(true);
+    } catch {
+      toast.error('Помилка додавання в кошик');
+    }
   };
 
-  const removeFromCart = (id: string) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+  const handleRemoveFromCart = async (id: number) => {
+    try {
+      await removeFromCart(id);
+    } catch {
+      toast.error('Помилка видалення з кошика');
+    }
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
+  const handleUpdateQuantity = async (id: number, quantity: number) => {
     if (quantity <= 0) {
-      removeFromCart(id);
+      await removeFromCart(id);
       return;
     }
-    setCart((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity } : item))
-    );
-  };
 
-  const clearCart = () => {
-    setCart([]);
+    try {
+      await updateQuantity(id, quantity);
+    } catch {
+      toast.error('Помилка оновлення кількості');
+    }
   };
 
   const loginMutation = useMutation({
@@ -75,6 +72,7 @@ export function Page() {
       setIsLoginOpen(false);
 
       await login(tokens);
+      await fetchCart();
     },
     onError: (err) => {
       toast.error('Помилка входу', {
@@ -120,8 +118,6 @@ export function Page() {
     setIsOrderOpen(true);
   };
 
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-
   return (
     <div className="min-h-screen">
       <Header
@@ -131,10 +127,10 @@ export function Page() {
         onRegisterClick={() => setIsRegisterOpen(true)}
         onLogout={handleLogout}
         onCartClick={() => setIsCartOpen(true)}
-        cartItemsCount={totalItems}
+        cartItemsCount={cartItems.length}
       />
       <Hero />
-      <Menu onAddToCart={addToCart} />
+      <Menu onAddToCart={handleAddToCart} />
 
       <LoginDialog
         open={isLoginOpen}
@@ -160,17 +156,18 @@ export function Page() {
 
       <Cart
         open={isCartOpen}
+        items={cartItems}
+        totalAmount={totalAmount}
         onOpenChange={setIsCartOpen}
-        items={cart}
-        onUpdateQuantity={updateQuantity}
-        onRemove={removeFromCart}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemove={handleRemoveFromCart}
         onCheckout={handleCheckout}
       />
 
       <OrderDialog
         open={isOrderOpen}
         onOpenChange={setIsOrderOpen}
-        cart={cart}
+        cart={cartItems}
         onOrderComplete={clearCart}
         isAuthenticated={isAuthenticated}
         onLoginRequired={() => {

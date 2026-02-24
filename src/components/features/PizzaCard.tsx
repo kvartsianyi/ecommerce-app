@@ -1,26 +1,25 @@
+import { useState } from 'react';
+
 import type { Pizza } from '@/types/product';
 import { Counter } from '../Counter';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter } from '../ui/card';
 
+import pizzaImage from '../../assets/pizza.png';
+
 type PizzaCardProps = {
   pizza: Pizza;
-  quantity: number;
-  OnQuantityChange: (pizzaId: number, quantity: number) => void;
-  OnAddToCart: (pizza: Pizza) => void;
+  OnAddToCart: (id: number, quantity: number) => void;
 };
 
-export function PizzaCard({
-  pizza,
-  quantity = 1,
-  OnQuantityChange,
-  OnAddToCart,
-}: PizzaCardProps) {
+export function PizzaCard({ pizza, OnAddToCart }: PizzaCardProps) {
+  const [quantity, setQuantity] = useState(1);
+
   return (
     <Card className="flex flex-col overflow-hidden py-0">
       <div className="aspect-square cursor-pointer overflow-hidden">
         <img
-          src={pizza.picture ?? '/placeholder.svg'}
+          src={pizza.picture ?? pizzaImage}
           alt={pizza.title}
           className="h-full w-full object-cover transition-transform hover:scale-105"
         />
@@ -36,13 +35,12 @@ export function PizzaCard({
         </p>
       </CardContent>
       <CardFooter className="p-4 pt-0 gap-2">
-        <Counter
-          max={999}
-          value={quantity}
-          onChange={(value) => OnQuantityChange(pizza.id, value)}
-        />
-        <Button className="flex-1" onClick={() => OnAddToCart(pizza)}>
-          Додати в кошик
+        <Counter max={999} value={quantity} onChange={setQuantity} />
+        <Button
+          className="flex-1"
+          onClick={() => OnAddToCart(pizza.id, quantity)}
+        >
+          + Додати в кошик
         </Button>
       </CardFooter>
     </Card>
