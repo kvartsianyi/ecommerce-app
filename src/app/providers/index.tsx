@@ -1,4 +1,5 @@
 import React from 'react';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 import { ThemeProvider } from './theme';
 import { QueryProvider } from './query';
@@ -25,6 +26,7 @@ export function Providers({ children }: { children?: React.ReactNode }) {
           <QueryProvider>
             <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
               <RouterProvider router={router} />
+              <TanStackRouterDevtools router={router} />
               {children}
             </ThemeProvider>
           </QueryProvider>
