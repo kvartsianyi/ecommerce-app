@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useShallow } from 'zustand/react/shallow';
 
 import type {
   LoginBody,
@@ -18,12 +19,34 @@ import { LoginDialog } from '@/features/auth/dialogs/LoginDialog';
 import { authApi } from '@/features/auth/api';
 import { useAuth } from '@/app/providers/auth/useAuth';
 import { useCart } from '@/app/providers/cart/useCart';
+import { useModalStore } from '@/shared/store';
 
 export function HomePage() {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const { isLoginOpen, openLogin, closeLogin } = useModalStore(
+    useShallow((state) => ({
+      isLoginOpen: state.isLoginOpen,
+      openLogin: state.openLogin,
+      closeLogin: state.closeLogin,
+    }))
+  );
+
+  const { isRegisterOpen, openRegister, closeRegister } = useModalStore(
+    useShallow((state) => ({
+      isRegisterOpen: state.isRegisterOpen,
+      openRegister: state.openRegister,
+      closeRegister: state.closeRegister,
+    }))
+  );
+
+  const { isCartOpen, openCart, closeCart } = useModalStore(
+    useShallow((state) => ({
+      isCartOpen: state.isCartOpen,
+      openCart: state.openCart,
+      closeCart: state.closeCart,
+    }))
+  );
+
   const [isOrderOpen, setIsOrderOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const { user, isAuthenticated, login, logout } = useAuth();
   const {
@@ -36,15 +59,30 @@ export function HomePage() {
     clearCart,
   } = useCart();
 
+  const onLoginOpenChange = (open: boolean) =>
+    useModalStore.setState({
+      isLoginOpen: open,
+    });
+
+  const onRegisterOpenChange = (open: boolean) =>
+    useModalStore.setState({
+      isRegisterOpen: open,
+    });
+
+  const onCartOpenChange = (open: boolean) =>
+    useModalStore.setState({
+      isCartOpen: open,
+    });
+
   const handleAddToCart = async (id: number, quantity = 1) => {
     if (!isAuthenticated) {
-      setIsLoginOpen(true);
+      openLogin();
       return;
     }
 
     try {
       await addToCart(id, quantity);
-      setIsCartOpen(true);
+      openCart();
     } catch {
       toast.error('Помилка додавання в кошик');
     }
@@ -74,7 +112,7 @@ export function HomePage() {
   const loginMutation = useMutation({
     mutationFn: (data: LoginBody) => authApi.login(data),
     onSuccess: async ({ data: tokens }) => {
-      setIsLoginOpen(false);
+      closeLogin();
 
       await login(tokens);
       await fetchCart();
@@ -92,7 +130,7 @@ export function HomePage() {
   const registrationMutation = useMutation({
     mutationFn: (data: RegistrationBody) => authApi.register(data),
     onSuccess: async () => {
-      setIsRegisterOpen(false);
+      closeRegister();
 
       toast.success('Реєстрація успішна', {
         description:
@@ -119,7 +157,7 @@ export function HomePage() {
   };
 
   const handleCheckout = () => {
-    setIsCartOpen(false);
+    closeCart();
     setIsOrderOpen(true);
   };
 
@@ -128,10 +166,10 @@ export function HomePage() {
       <Header
         isAuthenticated={isAuthenticated}
         userName={user?.email || ''}
-        onLoginClick={() => setIsLoginOpen(true)}
-        onRegisterClick={() => setIsRegisterOpen(true)}
+        onLoginClick={openLogin}
+        onRegisterClick={openRegister}
         onLogout={handleLogout}
-        onCartClick={() => setIsCartOpen(true)}
+        onCartClick={openCart}
         cartItemsCount={cartItems.length}
       />
       <Hero />
@@ -140,30 +178,24 @@ export function HomePage() {
       <LoginDialog
         open={isLoginOpen}
         isPendingSubmit={loginMutation.isPending}
-        onOpenChange={setIsLoginOpen}
+        onOpenChange={onLoginOpenChange}
         onLogin={handleLogin}
-        onSwitchToRegister={() => {
-          setIsLoginOpen(false);
-          setIsRegisterOpen(true);
-        }}
+        onSwitchToRegister={openRegister}
       />
 
       <RegisterDialog
         open={isRegisterOpen}
         isPendingSubmit={registrationMutation.isPending}
-        onOpenChange={setIsRegisterOpen}
+        onOpenChange={onRegisterOpenChange}
         onRegister={handleRegister}
-        onSwitchToLogin={() => {
-          setIsRegisterOpen(false);
-          setIsLoginOpen(true);
-        }}
+        onSwitchToLogin={openLogin}
       />
 
       <Cart
         open={isCartOpen}
         items={cartItems}
         totalAmount={totalAmount}
-        onOpenChange={setIsCartOpen}
+        onOpenChange={onCartOpenChange}
         onUpdateQuantity={handleUpdateQuantity}
         onRemove={handleRemoveFromCart}
         onCheckout={handleCheckout}
@@ -177,7 +209,7 @@ export function HomePage() {
         isAuthenticated={isAuthenticated}
         onLoginRequired={() => {
           setIsOrderOpen(false);
-          setIsLoginOpen(true);
+          openLogin();
         }}
       />
 
