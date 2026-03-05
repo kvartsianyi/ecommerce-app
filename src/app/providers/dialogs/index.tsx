@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 
 import { LoginDialog, RegisterDialog } from '@/features/auth/dialogs';
 import { OrderDialog } from '@/features/order/dialogs';
-import { Cart } from '@/features/cart/api/components/Cart';
+import { Cart } from '@/features/cart/components';
 import { useModalStore } from '@/shared/store';
 import { useAuth } from '@/app/providers/auth';
 import { useCart } from '@/app/providers/cart';
