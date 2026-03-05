@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { Pizza } from '../types';
+import type { Product } from '../types';
 import { Counter } from '@/shared/ui/Counter';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardFooter } from '@/shared/ui/card';
@@ -8,7 +8,7 @@ import { Card, CardContent, CardFooter } from '@/shared/ui/card';
 import pizzaImage from '@/assets/pizza.png';
 
 type PizzaCardProps = {
-  pizza: Pizza;
+  pizza: Product;
   OnAddToCart: (id: number, quantity: number) => void;
 };
 
