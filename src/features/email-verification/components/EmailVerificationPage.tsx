@@ -1,21 +1,17 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { useMutation } from '@tanstack/react-query';
 
 /* TODO:
 - [ ] Crate AuthFormWrapper component
-- [x] Move Footer and Header to shared/layout
-- [ ] Create main layout (with outlet) for routing in app/layouts
-- [x] Delete App.tsx and move providers wrapper usage and FullScreenSpinner to main.tsx
 */
 
 import { useAuth } from '@/app/providers/auth/useAuth';
-import { usersApi } from '../api';
 import { Button } from '@/shared/ui/button';
 import { useCountdown } from '@/shared/hooks/useCountdown';
 import { ERROR_KEYS } from '@/shared/constants';
 import { EmailVerificationCard } from './EmailVerificationCard';
 import { getEmailVerificationSettings } from '../helpers';
+import { useEmailVerification } from '../api/hooks';
 
 export function EmailVerificationPage() {
   const { token } = useSearch({ from: '/email-verification' });
@@ -26,9 +22,7 @@ export function EmailVerificationPage() {
     navigate({ to: '/' })
   );
 
-  const verifyEmailMutation = useMutation({
-    mutationKey: ['email-verification'],
-    mutationFn: (token: string) => usersApi.emailVerification(token),
+  const verifyEmailMutation = useEmailVerification({
     onSuccess: async ({ data: tokens }) => {
       await login(tokens);
       startRedirectCountdown();

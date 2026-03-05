@@ -1,4 +1,4 @@
-export type Pizza = {
+export type Product = {
   id: number;
   title: string;
   description: string;

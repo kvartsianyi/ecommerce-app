@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { useShallow } from 'zustand/react/shallow';
 import { toast } from 'sonner';
 
@@ -9,12 +8,8 @@ import { Cart } from '@/features/cart/api/components/Cart';
 import { useModalStore } from '@/shared/store';
 import { useAuth } from '@/app/providers/auth';
 import { useCart } from '@/app/providers/cart';
-import { authApi } from '@/features/auth/api';
-import type {
-  LoginBody,
-  RegistrationBody,
-  RegistrationForm,
-} from '@/features/auth/types';
+import { useLogin, useRegistration } from '@/features/auth/api/hooks';
+import type { LoginBody, RegistrationForm } from '@/features/auth/types';
 
 export function DialogsProvider() {
   const { isLoginOpen, openLogin, closeLogin } = useModalStore(
@@ -88,37 +83,25 @@ export function DialogsProvider() {
     }
   };
 
-  const loginMutation = useMutation({
-    mutationFn: (data: LoginBody) => authApi.login(data),
+  const loginMutation = useLogin({
     onSuccess: async ({ data: tokens }) => {
       closeLogin();
 
       await login(tokens);
       await fetchCart();
     },
-    onError: (err) => {
-      toast.error('Помилка входу', {
-        description: err.message,
-      });
-    },
   });
 
   const handleLogin = (credentials: LoginBody) =>
     loginMutation.mutate(credentials);
 
-  const registrationMutation = useMutation({
-    mutationFn: (data: RegistrationBody) => authApi.register(data),
+  const registrationMutation = useRegistration({
     onSuccess: async () => {
       closeRegister();
 
       toast.success('Реєстрація успішна', {
         description:
           'Перевірте вашу електронну пошту для підтвердження облікового запису.',
-      });
-    },
-    onError: (err) => {
-      toast.error('Помилка реєстрації', {
-        description: err.message,
       });
     },
   });

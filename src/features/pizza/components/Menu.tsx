@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { Button } from '@/shared/ui/button';
-import { useQuery } from '@tanstack/react-query';
-import { pizzaApi } from '@/features/pizza/api';
-import { PizzaCard } from './PizzaCard';
+import { PizzaCard } from './ProductCard';
 import { Spinner } from '@/shared/ui/spinner';
+import { useGetProducts } from '../api/hooks';
+import { useCart } from '@/app/providers/cart';
+import { useAuth } from '@/app/providers/auth';
+import { useModalStore } from '@/shared/store';
 
 const categories = [
   { id: 'all', nameUk: 'Всі' },
@@ -14,19 +17,29 @@ const categories = [
   { id: 'vegetarian', nameUk: 'Вегетаріанські' },
 ];
 
-type MenuProps = {
-  onAddToCart: (id: number, quantity: number) => void;
-};
+export function Menu() {
+  const openLogin = useModalStore((state) => state.openLogin);
+  const openCart = useModalStore((state) => state.openCart);
 
-export function Menu({ onAddToCart }: MenuProps) {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const initialProducts = { data: [] };
+  const { products, isPending } = useGetProducts();
+  const { isAuthenticated } = useAuth();
+  const { addToCart } = useCart();
 
-  const { data: { data: pizzas } = initialProducts, isPending } = useQuery({
-    queryKey: ['products'],
-    queryFn: pizzaApi.fetchProducts,
-  });
+  const handleAddToCart = async (id: number, quantity = 1) => {
+    if (!isAuthenticated) {
+      openLogin();
+      return;
+    }
+
+    try {
+      await addToCart(id, quantity);
+      openCart();
+    } catch {
+      toast.error('Помилка додавання в кошик');
+    }
+  };
 
   return (
     <section id="menu" className="py-16 md:py-24">
@@ -59,8 +72,12 @@ export function Menu({ onAddToCart }: MenuProps) {
         )}
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {pizzas.map((pizza) => (
-            <PizzaCard key={pizza.id} pizza={pizza} OnAddToCart={onAddToCart} />
+          {products.map((pizza) => (
+            <PizzaCard
+              key={pizza.id}
+              pizza={pizza}
+              OnAddToCart={handleAddToCart}
+            />
           ))}
         </div>
       </div>
