@@ -4,12 +4,11 @@ import { toast } from 'sonner';
 
 import { LoginDialog, RegisterDialog } from '@/features/auth/dialogs';
 import { OrderDialog } from '@/features/order/dialogs';
-import { Cart } from '@/features/cart/api/components/Cart';
+import { Cart } from '@/features/cart/components';
 import { useModalStore } from '@/shared/store';
 import { useAuth } from '@/app/providers/auth';
-import { useCart } from '@/app/providers/cart';
+import { useCart } from '@/features/cart/api/hooks';
 import { useLogin, useRegistration } from '@/features/auth/api/hooks';
-import type { LoginBody, RegistrationForm } from '@/features/auth/types';
 
 export function DialogsProvider() {
   const { isLoginOpen, openLogin, closeLogin } = useModalStore(
@@ -38,14 +37,9 @@ export function DialogsProvider() {
   const [isOrderOpen, setIsOrderOpen] = useState(false);
 
   const { isAuthenticated, login } = useAuth();
-  const {
-    items: cartItems,
-    totalAmount,
-    fetchCart,
-    removeFromCart,
-    updateQuantity,
-    clearCart,
-  } = useCart();
+  const { data, refetch: fetchCart } = useCart();
+
+  const items = data?.items ?? [];
 
   const onLoginOpenChange = (open: boolean) =>
     useModalStore.setState({
@@ -62,28 +56,7 @@ export function DialogsProvider() {
       isCartOpen: open,
     });
 
-  const handleRemoveFromCart = async (id: number) => {
-    try {
-      await removeFromCart(id);
-    } catch {
-      toast.error('Помилка видалення з кошика');
-    }
-  };
-
-  const handleUpdateQuantity = async (id: number, quantity: number) => {
-    if (quantity <= 0) {
-      await removeFromCart(id);
-      return;
-    }
-
-    try {
-      await updateQuantity(id, quantity);
-    } catch {
-      toast.error('Помилка оновлення кількості');
-    }
-  };
-
-  const loginMutation = useLogin({
+  const { mutate: handleLogin, isPending: isLoginPending } = useLogin({
     onSuccess: async ({ data: tokens }) => {
       closeLogin();
 
@@ -92,26 +65,17 @@ export function DialogsProvider() {
     },
   });
 
-  const handleLogin = (credentials: LoginBody) =>
-    loginMutation.mutate(credentials);
+  const { mutate: handleRegistration, isPending: isRegistrationPending } =
+    useRegistration({
+      onSuccess: async () => {
+        closeRegister();
 
-  const registrationMutation = useRegistration({
-    onSuccess: async () => {
-      closeRegister();
-
-      toast.success('Реєстрація успішна', {
-        description:
-          'Перевірте вашу електронну пошту для підтвердження облікового запису.',
-      });
-    },
-  });
-
-  const handleRegister = (userDetails: RegistrationForm) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { confirmPassword, ...restUserDetails } = userDetails;
-
-    registrationMutation.mutate(restUserDetails);
-  };
+        toast.success('Реєстрація успішна', {
+          description:
+            'Перевірте вашу електронну пошту для підтвердження облікового запису.',
+        });
+      },
+    });
 
   const handleCheckout = () => {
     closeCart();
@@ -122,7 +86,7 @@ export function DialogsProvider() {
     <>
       <LoginDialog
         open={isLoginOpen}
-        isPendingSubmit={loginMutation.isPending}
+        isPendingSubmit={isLoginPending}
         onOpenChange={onLoginOpenChange}
         onLogin={handleLogin}
         onSwitchToRegister={openRegister}
@@ -130,27 +94,23 @@ export function DialogsProvider() {
 
       <RegisterDialog
         open={isRegisterOpen}
-        isPendingSubmit={registrationMutation.isPending}
+        isPendingSubmit={isRegistrationPending}
         onOpenChange={onRegisterOpenChange}
-        onRegister={handleRegister}
+        onRegister={handleRegistration}
         onSwitchToLogin={openLogin}
       />
 
       <Cart
         open={isCartOpen}
-        items={cartItems}
-        totalAmount={totalAmount}
         onOpenChange={onCartOpenChange}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemove={handleRemoveFromCart}
         onCheckout={handleCheckout}
       />
 
       <OrderDialog
         open={isOrderOpen}
         onOpenChange={setIsOrderOpen}
-        cart={cartItems}
-        onOrderComplete={clearCart}
+        cart={items}
+        onOrderComplete={() => {}}
         isAuthenticated={isAuthenticated}
         onLoginRequired={() => {
           setIsOrderOpen(false);

@@ -5,9 +5,9 @@ import { Button } from '@/shared/ui/button';
 import { PizzaCard } from './ProductCard';
 import { Spinner } from '@/shared/ui/spinner';
 import { useGetProducts } from '../api/hooks';
-import { useCart } from '@/app/providers/cart';
 import { useAuth } from '@/app/providers/auth';
 import { useModalStore } from '@/shared/store';
+import { useAddToCart } from '@/features/cart/api/hooks';
 
 const categories = [
   { id: 'all', nameUk: 'Всі' },
@@ -23,9 +23,11 @@ export function Menu() {
 
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const { products, isPending } = useGetProducts();
   const { isAuthenticated } = useAuth();
-  const { addToCart } = useCart();
+  const { data, isPending } = useGetProducts();
+  const { mutateAsync: addToCart } = useAddToCart();
+
+  const products = data?.data ?? [];
 
   const handleAddToCart = async (id: number, quantity = 1) => {
     if (!isAuthenticated) {
@@ -34,7 +36,7 @@ export function Menu() {
     }
 
     try {
-      await addToCart(id, quantity);
+      await addToCart({ id, quantity });
       openCart();
     } catch {
       toast.error('Помилка додавання в кошик');

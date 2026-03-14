@@ -8,27 +8,24 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/shared/ui/sheet';
-import type { CartItem } from '@/shared/types';
+import { useCart, useUpdateQuantity, useRemoveFromCart } from '../api/hooks';
+import type { Cart } from '@/shared/types';
+import { Spinner } from '@/shared/ui/spinner';
 
 type CartProps = {
   open: boolean;
-  items: CartItem[];
-  totalAmount: number;
   onOpenChange: (open: boolean) => void;
-  onUpdateQuantity: (id: number, quantity: number) => void;
-  onRemove: (id: number) => void;
   onCheckout: () => void;
 };
 
-export function Cart({
-  open,
-  items,
-  totalAmount,
-  onOpenChange,
-  onUpdateQuantity,
-  onRemove,
-  onCheckout,
-}: CartProps) {
+export function Cart({ open, onOpenChange, onCheckout }: CartProps) {
+  const { data } = useCart();
+  const { updateQuantity } = useUpdateQuantity();
+  const { mutate: removeFromCart, isPending } = useRemoveFromCart();
+
+  const items = data?.items ?? [];
+  const totalAmount = data?.totalAmount ?? 0;
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="flex w-full flex-col sm:max-w-lg">
@@ -64,9 +61,9 @@ export function Cart({
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => onRemove(item.id)}
+                        onClick={() => removeFromCart(item.id)}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        {isPending ? <Spinner /> : <Trash2 />}
                       </Button>
                     </div>
                     <div className="mt-2 flex items-center gap-2">
@@ -74,8 +71,12 @@ export function Cart({
                         variant="outline"
                         size="icon"
                         className="h-8 w-8 bg-transparent"
+                        disabled={item.quantity <= 1}
                         onClick={() =>
-                          onUpdateQuantity(item.id, item.quantity - 1)
+                          updateQuantity({
+                            id: item.id,
+                            quantity: item.quantity - 1,
+                          })
                         }
                       >
                         <Minus className="h-3 w-3" />
@@ -86,7 +87,10 @@ export function Cart({
                         size="icon"
                         className="h-8 w-8 bg-transparent"
                         onClick={() =>
-                          onUpdateQuantity(item.id, item.quantity + 1)
+                          updateQuantity({
+                            id: item.id,
+                            quantity: item.quantity + 1,
+                          })
                         }
                       >
                         <Plus className="h-3 w-3" />

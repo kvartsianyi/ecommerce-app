@@ -12,17 +12,17 @@ import {
 import { registrationSchema } from '../schemas';
 import { FormField } from '@/shared/ui/FormField';
 import { Spinner } from '@/shared/ui/spinner';
-import type { RegistrationForm } from '../types';
 import { Input } from '@/shared/ui/input';
 import { FieldGroup } from '@/shared/ui/field';
 import { PhoneInput } from '@/shared/ui/PhoneInput';
 import { normalizePhoneNumber } from '@/shared/utils';
+import type { RegistrationBody } from '../types';
 
 type RegisterDialogProps = {
   open: boolean;
   isPendingSubmit: boolean;
   onOpenChange: (open: boolean) => void;
-  onRegister: (userDetails: RegistrationForm) => void;
+  onRegister: (userDetails: RegistrationBody) => void;
   onSwitchToLogin: () => void;
 };
 
@@ -45,11 +45,17 @@ export function RegisterDialog({
     validators: {
       onSubmit: registrationSchema,
     },
-    onSubmit: async ({ value }) =>
+    onSubmit: async ({ value }) => {
+      const { firstName, lastName, phone, email, password } = value;
+
       onRegister({
-        ...value,
-        phone: normalizePhoneNumber(value.phone),
-      }),
+        firstName,
+        lastName,
+        email,
+        password,
+        phone: normalizePhoneNumber(phone),
+      });
+    },
   });
 
   useEffect(() => {

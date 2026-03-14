@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { queryClient } from '../query/queryClient';
 import { AuthContext } from './AuthContext';
 import { tokenManager } from '@/shared/lib';
 import type { AuthTokens, User } from '@/shared/types';
@@ -24,9 +25,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await fetchMe();
   };
 
+  const clearCart = () => queryClient.removeQueries({ queryKey: ['cart'] });
+
   const logout = () => {
     tokenManager.clearTokens();
     setUser(null);
+    clearCart();
   };
 
   // ---- app init ----

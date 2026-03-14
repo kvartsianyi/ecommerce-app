@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
 import { useAuth } from '@/app/providers/auth/useAuth';
-import { useCart } from '@/app/providers/cart/useCart';
+import { useCart } from '@/features/cart/api/hooks';
 import { useModalStore } from '@/shared/store';
 
 export function Header() {
@@ -17,12 +17,9 @@ export function Header() {
   const openCart = useModalStore((state) => state.openCart);
 
   const { user, isAuthenticated, logout } = useAuth();
-  const { items, clearCart } = useCart();
+  const { data, isLoading } = useCart();
 
-  const handleLogout = () => {
-    clearCart();
-    logout();
-  };
+  const items = data?.items ?? [];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -40,6 +37,7 @@ export function Header() {
               variant="ghost"
               size="icon"
               className="relative"
+              disabled={isLoading}
               onClick={openCart}
             >
               <ShoppingCart className="h-5 w-5" />
@@ -62,7 +60,7 @@ export function Header() {
                 <DropdownMenuItem disabled>
                   <span className="font-medium">{user?.email}</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogout}>
+                <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Вийти
                 </DropdownMenuItem>
