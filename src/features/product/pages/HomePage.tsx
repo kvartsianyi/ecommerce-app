@@ -1,5 +1,4 @@
-import { Hero } from '@/features/pizza/components/Hero';
-import { Menu } from '@/features/pizza/components/Menu';
+import { Hero, Menu } from '../components';
 
 export function HomePage() {
   return (

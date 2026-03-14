@@ -10,7 +10,3 @@ export type RegistrationBody = {
   email: string;
   password: string;
 };
-
-export type RegistrationForm = RegistrationBody & {
-  confirmPassword: string;
-};

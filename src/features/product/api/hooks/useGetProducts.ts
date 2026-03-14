@@ -9,17 +9,9 @@ export const useGetProducts = (
     UseQueryOptions<PaginatedApiResponse<Product[]>, Error>,
     'queryKey' | 'queryFn'
   >
-) => {
-  const query = useQuery({
+) =>
+  useQuery({
     queryKey: ['products'],
     queryFn: productApi.fetchProducts,
-    placeholderData: { data: [], meta: {} },
     ...options,
   });
-
-  return {
-    ...query,
-    products: query.data!.data,
-    meta: query.data!.meta,
-  };
-};
