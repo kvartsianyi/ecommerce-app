@@ -44,7 +44,7 @@ export const useUpdateQuantity = (
     ...options,
   });
 
-  const debouncedMutation = useDebouncedCallback(mutation.mutate, 300);
+  const debouncedMutation = useDebouncedCallback(mutation.mutate, 500);
 
   const updateQuantity = async ({
     id,

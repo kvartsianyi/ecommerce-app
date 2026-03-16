@@ -20,8 +20,9 @@ type CartProps = {
 
 export function Cart({ open, onOpenChange, onCheckout }: CartProps) {
   const { data } = useCart();
-  const { updateQuantity } = useUpdateQuantity();
-  const { mutate: removeFromCart, isPending } = useRemoveFromCart();
+  const { updateQuantity, isPending: isUpdatePending } = useUpdateQuantity();
+  const { mutate: removeFromCart, isPending: isRemovePending } =
+    useRemoveFromCart();
 
   const items = data?.items ?? [];
   const totalAmount = data?.totalAmount ?? 0;
@@ -63,7 +64,7 @@ export function Cart({ open, onOpenChange, onCheckout }: CartProps) {
                         size="icon"
                         onClick={() => removeFromCart(item.id)}
                       >
-                        {isPending ? <Spinner /> : <Trash2 />}
+                        {isRemovePending ? <Spinner /> : <Trash2 />}
                       </Button>
                     </div>
                     <div className="mt-2 flex items-center gap-2">
@@ -71,7 +72,7 @@ export function Cart({ open, onOpenChange, onCheckout }: CartProps) {
                         variant="outline"
                         size="icon"
                         className="h-8 w-8 bg-transparent"
-                        disabled={item.quantity <= 1}
+                        disabled={isUpdatePending || item.quantity <= 1}
                         onClick={() =>
                           updateQuantity({
                             id: item.id,
@@ -81,11 +82,18 @@ export function Cart({ open, onOpenChange, onCheckout }: CartProps) {
                       >
                         <Minus className="h-3 w-3" />
                       </Button>
-                      <span className="w-8 text-center">{item.quantity}</span>
+                      <div className="w-8 flex justify-center">
+                        {isUpdatePending ? (
+                          <Spinner />
+                        ) : (
+                          <span>{item.quantity}</span>
+                        )}
+                      </div>
                       <Button
                         variant="outline"
                         size="icon"
                         className="h-8 w-8 bg-transparent"
+                        disabled={isUpdatePending}
                         onClick={() =>
                           updateQuantity({
                             id: item.id,

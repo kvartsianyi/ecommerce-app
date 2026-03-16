@@ -132,12 +132,7 @@ export function LoginDialog({
               className="w-full"
               disabled={isPendingSubmit}
             >
-              {isPendingSubmit ? (
-                <Spinner data-icon="inline-start" />
-              ) : (
-                <GoogleIcon className="w-5 h-5" />
-              )}{' '}
-              Увійти через Google
+              <GoogleIcon className="w-5 h-5" /> Увійти через Google
             </Button>
             <div className="text-center text-sm">
               <span className="text-muted-foreground">
