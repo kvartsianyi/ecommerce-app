@@ -1,4 +1,4 @@
-import type { AuthTokens } from '@/types/auth';
+import type { AuthTokens } from '@/shared/types/auth';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
 const REFRESH_TOKEN_KEY = 'refreshToken';
