@@ -6,16 +6,15 @@ import { LoginDialog, RegisterDialog } from '@/features/auth/dialogs';
 import { OrderDialog } from '@/features/order/dialogs';
 import { Cart } from '@/features/cart/components';
 import { useModalStore } from '@/shared/store';
-import { useAuth } from '@/app/providers/auth';
+import { useAuth } from '@/features/auth/api/hooks';
 import { useCart } from '@/features/cart/api/hooks';
 import { useLogin, useRegistration } from '@/features/auth/api/hooks';
 
 export function DialogsProvider() {
-  const { isLoginOpen, openLogin, closeLogin } = useModalStore(
+  const { isLoginOpen, openLogin } = useModalStore(
     useShallow((state) => ({
       isLoginOpen: state.isLoginOpen,
       openLogin: state.openLogin,
-      closeLogin: state.closeLogin,
     }))
   );
 
@@ -36,8 +35,8 @@ export function DialogsProvider() {
 
   const [isOrderOpen, setIsOrderOpen] = useState(false);
 
-  const { isAuthenticated, login } = useAuth();
-  const { data, refetch: fetchCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { data } = useCart();
 
   const items = data?.items ?? [];
 
@@ -56,14 +55,7 @@ export function DialogsProvider() {
       isCartOpen: open,
     });
 
-  const { mutate: handleLogin, isPending: isLoginPending } = useLogin({
-    onSuccess: async ({ data: tokens }) => {
-      closeLogin();
-
-      await login(tokens);
-      await fetchCart();
-    },
-  });
+  const { mutate: handleLogin, isPending: isLoginPending } = useLogin();
 
   const { mutate: handleRegistration, isPending: isRegistrationPending } =
     useRegistration({

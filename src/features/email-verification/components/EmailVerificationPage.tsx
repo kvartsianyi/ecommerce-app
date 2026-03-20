@@ -1,31 +1,27 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 
-/* TODO:
-- [ ] Crate AuthFormWrapper component
-*/
-
-import { useAuth } from '@/app/providers/auth/useAuth';
 import { Button } from '@/shared/ui/button';
 import { useCountdown } from '@/shared/hooks/useCountdown';
 import { ERROR_KEYS } from '@/shared/constants';
 import { EmailVerificationCard } from './EmailVerificationCard';
 import { getEmailVerificationSettings } from '../helpers';
 import { useEmailVerification } from '../api/hooks';
+import { tokenManager } from '@/shared/lib';
 
 export function EmailVerificationPage() {
   const { token } = useSearch({ from: '/email-verification' });
-  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const { seconds, start: startRedirectCountdown } = useCountdown(5, () =>
+  const { seconds, start: runRedirectCountdown } = useCountdown(5, () =>
     navigate({ to: '/' })
   );
 
   const verifyEmailMutation = useEmailVerification({
-    onSuccess: async ({ data: tokens }) => {
-      await login(tokens);
-      startRedirectCountdown();
+    onSuccess: (tokens) => {
+      tokenManager.setTokens(tokens);
+
+      runRedirectCountdown();
     },
   });
 

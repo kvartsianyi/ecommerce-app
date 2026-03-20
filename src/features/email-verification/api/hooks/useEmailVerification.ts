@@ -1,11 +1,11 @@
 import { type UseMutationOptions, useMutation } from '@tanstack/react-query';
 
 import { usersApi } from '..';
-import type { ApiResponse, TokenPair } from '@/shared/types';
+import type { TokenPair } from '@/shared/types';
 
 export const useEmailVerification = (
   options?: Omit<
-    UseMutationOptions<ApiResponse<TokenPair>, Error, string>,
+    UseMutationOptions<TokenPair, Error, string>,
     'mutationKey' | 'mutationFn'
   >
 ) =>
