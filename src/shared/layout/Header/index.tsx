@@ -7,17 +7,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
-import { useAuth } from '@/app/providers/auth/useAuth';
+import { useAuth } from '@/features/auth/api/hooks';
 import { useCart } from '@/features/cart/api/hooks';
 import { useModalStore } from '@/shared/store';
 import { Logo } from './Logo';
+import { logout } from '@/features/auth/logout';
 
 export function Header() {
   const openLogin = useModalStore((state) => state.openLogin);
   const openRegister = useModalStore((state) => state.openRegister);
   const openCart = useModalStore((state) => state.openCart);
 
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { data, isLoading } = useCart();
 
   const items = data?.items ?? [];

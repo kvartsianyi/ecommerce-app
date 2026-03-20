@@ -1,34 +1,21 @@
 import React from 'react';
+import { RouterProvider } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 import { ThemeProvider } from './theme';
 import { QueryProvider } from './query';
-import { AuthProvider } from './auth';
-
-import { RouterProvider, createRouter } from '@tanstack/react-router';
-
-import { routeTree } from '@/routeTree.gen';
-
-const router = createRouter({ routeTree });
-
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router;
-  }
-}
+import { router } from './router';
 
 export function Providers({ children }: { children?: React.ReactNode }) {
   return (
     <>
-      <AuthProvider>
-        <QueryProvider>
-          <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-            <RouterProvider router={router} />
-            <TanStackRouterDevtools router={router} />
-            {children}
-          </ThemeProvider>
-        </QueryProvider>
-      </AuthProvider>
+      <QueryProvider>
+        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+          <RouterProvider router={router} />
+          <TanStackRouterDevtools router={router} />
+          {children}
+        </ThemeProvider>
+      </QueryProvider>
     </>
   );
 }

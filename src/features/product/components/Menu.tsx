@@ -5,7 +5,7 @@ import { Button } from '@/shared/ui/button';
 import { PizzaCard } from './ProductCard';
 import { Spinner } from '@/shared/ui/spinner';
 import { useGetProducts } from '../api/hooks';
-import { useAuth } from '@/app/providers/auth';
+import { useAuth } from '@/features/auth/api/hooks';
 import { useModalStore } from '@/shared/store';
 import { useAddToCart } from '@/features/cart/api/hooks';
 
