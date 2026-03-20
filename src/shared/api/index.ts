@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { tokenManager } from '@/shared/lib';
 import { normalizeAxiosError } from '@/shared/utils';
+import { logout } from '@/features/auth';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -40,7 +41,7 @@ api.interceptors.response.use(
 
         return api(originalRequest);
       } catch (refreshError) {
-        tokenManager.clearTokens();
+        logout();
 
         return Promise.reject(refreshError);
       }
