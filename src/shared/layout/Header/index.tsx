@@ -1,17 +1,10 @@
-import { ShoppingCart, User, LogOut } from 'lucide-react';
-
-import { Button } from '@/shared/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/shared/ui/dropdown-menu';
 import { useAuth } from '@/features/auth/api/hooks';
 import { useCart } from '@/features/cart/api/hooks';
 import { useModalStore } from '@/shared/store';
 import { Logo } from './Logo';
 import { logout } from '@/features/auth/logout';
+import { AuthButtons } from './AuthButtons';
+import { UserActions } from './UserActions';
 
 export function Header() {
   const openLogin = useModalStore((state) => state.openLogin);
@@ -19,7 +12,7 @@ export function Header() {
   const openCart = useModalStore((state) => state.openCart);
 
   const { user, isAuthenticated } = useAuth();
-  const { data, isLoading } = useCart();
+  const { data } = useCart();
 
   const items = data?.items ?? [];
 
@@ -29,47 +22,15 @@ export function Header() {
         <Logo />
 
         <div className="flex items-center gap-3">
-          {isAuthenticated && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative"
-              disabled={isLoading}
-              onClick={openCart}
-            >
-              <ShoppingCart className="h-5 w-5" />
-              {items.length > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                  {items.length}
-                </span>
-              )}
-            </Button>
-          )}
-
           {isAuthenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem disabled>
-                  <span className="font-medium">{user?.email}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={logout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Вийти
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UserActions
+              userName={user?.email || 'unknown'}
+              count={items.length}
+              onOpenCart={openCart}
+              onLogout={logout}
+            />
           ) : (
-            <>
-              <Button variant="ghost" onClick={openLogin}>
-                Увійти
-              </Button>
-              <Button onClick={openRegister}>Реєстрація</Button>
-            </>
+            <AuthButtons openLogin={openLogin} openRegister={openRegister} />
           )}
         </div>
       </div>

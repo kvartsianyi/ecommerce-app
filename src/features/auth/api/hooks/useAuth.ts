@@ -10,18 +10,19 @@ export const useAuth = (
     'queryKey' | 'queryFn' | 'retry'
   >
 ) => {
+  const isAuthenticated = tokenManager.hasAuthToken();
+
   const query = useQuery({
     queryKey: ['me'],
     queryFn: authApi.fetchMe,
     retry: false,
-    enabled:
-      !!tokenManager.getAccessToken() || !!tokenManager.getRefreshToken(),
+    enabled: isAuthenticated,
     ...options,
   });
 
   return {
     ...query,
     user: query.data,
-    isAuthenticated: !!query.data,
+    isAuthenticated,
   };
 };
