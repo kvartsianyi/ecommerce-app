@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/shared/ui/button';
-import { PizzaCard } from './ProductCard';
+import { ProductCard } from './ProductCard';
 import { Spinner } from '@/shared/ui/spinner';
 import { useGetProducts } from '../api/hooks';
 import { useAuth } from '@/features/auth/api/hooks';
@@ -74,10 +74,10 @@ export function Menu() {
         )}
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {products.map((pizza) => (
-            <PizzaCard
-              key={pizza.id}
-              pizza={pizza}
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
               OnAddToCart={handleAddToCart}
             />
           ))}

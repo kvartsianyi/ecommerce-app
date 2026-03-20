@@ -1,5 +1,3 @@
-import { Minus, Plus, Trash2 } from 'lucide-react';
-
 import { Button } from '@/shared/ui/button';
 import {
   Sheet,
@@ -8,9 +6,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/shared/ui/sheet';
-import { useCart, useUpdateQuantity, useRemoveFromCart } from '../api/hooks';
+import { useCart } from '../api/hooks';
 import type { Cart } from '@/shared/types';
-import { Spinner } from '@/shared/ui/spinner';
+import { CartItem } from './CartItem';
 
 type CartProps = {
   open: boolean;
@@ -20,9 +18,6 @@ type CartProps = {
 
 export function Cart({ open, onOpenChange, onCheckout }: CartProps) {
   const { data } = useCart();
-  const { updateQuantity, isPending: isUpdatePending } = useUpdateQuantity();
-  const { mutate: removeFromCart, isPending: isRemovePending } =
-    useRemoveFromCart();
 
   const items = data?.items ?? [];
   const totalAmount = data?.totalAmount ?? 0;
@@ -42,73 +37,7 @@ export function Cart({ open, onOpenChange, onCheckout }: CartProps) {
           ) : (
             <div className="space-y-4">
               {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-4 rounded-lg border border-border p-4"
-                >
-                  <img
-                    src={item.picture || '/placeholder.svg'}
-                    alt={item.title}
-                    className="h-20 w-20 rounded-md object-cover"
-                  />
-                  <div className="flex flex-1 flex-col">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h4 className="font-semibold">{item.title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {item.price} ₴
-                        </p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removeFromCart(item.id)}
-                      >
-                        {isRemovePending ? <Spinner /> : <Trash2 />}
-                      </Button>
-                    </div>
-                    <div className="mt-2 flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-8 w-8 bg-transparent"
-                        disabled={isUpdatePending || item.quantity <= 1}
-                        onClick={() =>
-                          updateQuantity({
-                            id: item.id,
-                            quantity: item.quantity - 1,
-                          })
-                        }
-                      >
-                        <Minus className="h-3 w-3" />
-                      </Button>
-                      <div className="w-8 flex justify-center">
-                        {isUpdatePending ? (
-                          <Spinner />
-                        ) : (
-                          <span>{item.quantity}</span>
-                        )}
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-8 w-8 bg-transparent"
-                        disabled={isUpdatePending}
-                        onClick={() =>
-                          updateQuantity({
-                            id: item.id,
-                            quantity: item.quantity + 1,
-                          })
-                        }
-                      >
-                        <Plus className="h-3 w-3" />
-                      </Button>
-                      <span className="ml-auto font-semibold">
-                        {item.price * item.quantity} ₴
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <CartItem key={item.id} item={item} />
               ))}
             </div>
           )}
