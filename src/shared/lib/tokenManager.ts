@@ -10,6 +10,9 @@ export const tokenManager = {
     accessToken: localStorage.getItem(ACCESS_TOKEN_KEY),
     refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
   }),
+  hasAuthToken: (): boolean =>
+    !!localStorage.getItem(ACCESS_TOKEN_KEY) ||
+    !!localStorage.getItem(REFRESH_TOKEN_KEY),
   setTokens: (tokens: {
     accessToken: string | null;
     refreshToken: string | null;
