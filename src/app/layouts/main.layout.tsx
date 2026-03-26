@@ -6,13 +6,13 @@ import { DialogsProvider } from '../providers/dialogs';
 export function MainLayout() {
   return (
     <div className="min-h-screen">
-      <Header />
+      {/* <Header /> */}
 
-      <Outlet />
+      {/* <Outlet /> */}
 
-      <DialogsProvider />
+      {/* <DialogsProvider /> */}
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

@@ -37,6 +37,18 @@
   --sidebar-accent-foreground: oklch(0.2 0.02 30);
   --sidebar-border: oklch(0.9 0.01 60);
   --sidebar-ring: oklch(0.6 0.2 35);
+  --background-gradient:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 224, 163, 0.9),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(252, 165, 165, 0.45),
+      transparent 24%
+    ),
+    linear-gradient(180deg, #fff8ef 0%, #fffdf9 42%, #f4f6ef 100%);
 }
 
 .dark {
@@ -72,6 +84,18 @@
   --sidebar-accent-foreground: oklch(0.98 0.01 60);
   --sidebar-border: oklch(0.25 0.02 30);
   --sidebar-ring: oklch(0.65 0.2 35);
+  --background-gradient:
+    radial-gradient(
+      circle at top left,
+      rgba(180, 83, 9, 0.22),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(220, 38, 38, 0.18),
+      transparent 20%
+    ),
+    linear-gradient(180deg, #17120d 0%, #111827 46%, #0a0f16 100%);
 }
 
 @theme inline {
@@ -113,6 +137,7 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --background-image-gradient: var(--background-gradient);
 }
 
 @layer base {
@@ -120,7 +145,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient text-foreground;
   }
   html {
     scroll-behavior: smooth;
