@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router';
+import { Pizza } from 'lucide-react';
 
 type LogoProps = {
   to?: string;
@@ -7,10 +8,15 @@ type LogoProps = {
 export function Logo({ to = '/' }: LogoProps) {
   return (
     <Link to={to} className="flex items-center gap-2">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-        <span className="text-2xl text-primary-foreground">🍕</span>
+      <div className="flex size-11 items-center justify-center bg-primary text-primary-foreground shadow-lg">
+        <Pizza className="size-5" />
       </div>
-      <span className="text-xl font-bold">Pizza House</span>
+      <div>
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.25em]">
+          Pizza House
+        </p>
+        <h1 className="text-lg font-semibold">Меню смачної піци</h1>
+      </div>
     </Link>
   );
 }
