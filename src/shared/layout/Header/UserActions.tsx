@@ -1,7 +1,9 @@
 import { ShoppingCart } from 'lucide-react';
 
 import { Button } from '@/shared/ui/button';
-import { ProfileDropdown } from './ProfileDropDown';
+import { useCart } from '@/features/cart/api/hooks';
+import { Spinner } from '@/shared/ui/spinner';
+import { ProfileDropdown } from './ProfileDropdown';
 
 type UserActionsProps = {
   count: number;
@@ -10,6 +12,10 @@ type UserActionsProps = {
 };
 
 export function UserActions({ count, onOpenCart, onLogout }: UserActionsProps) {
+  const { isPending } = useCart();
+
+  const cartCountLabel = count > 0 ? ` (${count})` : '';
+
   return (
     <>
       <Button
@@ -18,7 +24,7 @@ export function UserActions({ count, onOpenCart, onLogout }: UserActionsProps) {
         onClick={() => onOpenCart() /* TODO: Redirect to /cart */}
       >
         <ShoppingCart className="size-4" />
-        Кошик{count > 0 ? ` (${count})` : ''}
+        Кошик{isPending ? <Spinner /> : cartCountLabel}
       </Button>
 
       <ProfileDropdown onLogout={onLogout} />
