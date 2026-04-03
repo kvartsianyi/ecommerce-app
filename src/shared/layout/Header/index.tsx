@@ -18,7 +18,7 @@ export function Header() {
   const items = data?.items ?? [];
 
   return (
-    <header className="section flex items-center justify-between px-5 py-4 sm:px-6">
+    <header className="section flex items-center justify-between sm:px-6">
       <Logo />
 
       <div className="flex items-center gap-3">

@@ -8,11 +8,11 @@ export function MainLayout() {
     <div className="min-h-screen px-8 py-4 container mx-auto">
       <Header />
 
-      {/* <Outlet /> */}
+      <main className="flex-1 py-6 sm:py-8">{/* <Outlet /> */}</main>
+
+      <Footer />
 
       <DialogsProvider />
-
-      {/* <Footer /> */}
     </div>
   );
 }
