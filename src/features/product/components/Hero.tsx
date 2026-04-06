@@ -1,4 +1,4 @@
-import { ArrowRight, Clock3, MapPin, Star } from 'lucide-react';
+import { ArrowRight, Clock3, Leaf, MapPin, Star } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
 import { Button } from '@/shared/ui/button';
@@ -85,7 +85,7 @@ function HeroProduct({ item }: { item: Product }) {
   return (
     <>
       <div className="flex justify-end">
-        <Badge className="rounded-none px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]">
+        <Badge className="px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]">
           {item.title}
         </Badge>
       </div>
@@ -172,8 +172,8 @@ export function Hero() {
   return (
     <div className="grid gap-5 xl:grid-cols-[2fr_3fr] xl:items-start">
       <div className="space-y-5">
-        <Badge className="rounded-none px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]">
-          Свіжо сьогодні
+        <Badge className="px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]">
+          <Leaf className="text-green-700" /> Свіжо сьогодні
         </Badge>
         <div className="space-y-4">
           <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
