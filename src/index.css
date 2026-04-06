@@ -74,6 +74,11 @@
       transparent 24%
     ),
     linear-gradient(180deg, #fff8ef 0%, #fffdf9 42%, #f4f6ef 100%);
+  --warm-surface: linear-gradient(
+    180deg,
+    rgba(255, 244, 220, 0.95),
+    rgba(255, 234, 204, 0.92)
+  );
 }
 
 .dark {
@@ -144,6 +149,11 @@
       transparent 20%
     ),
     linear-gradient(180deg, #17120d 0%, #111827 46%, #0a0f16 100%);
+  --warm-surface: linear-gradient(
+    180deg,
+    rgba(68, 43, 25, 0.95),
+    rgba(33, 25, 21, 0.92)
+  );
 }
 
 @theme inline {
@@ -199,6 +209,7 @@
   --shadow-2xl: var(--shadow-2xl);
 
   --background-image-gradient: var(--background-gradient);
+  --background-image-warm-surface: var(--warm-surface);
 }
 
 @layer base {
@@ -223,6 +234,6 @@
   }
 
   .section {
-    @apply border bg-background/60 p-5 rounded-md backdrop-blur;
+    @apply border bg-background/35 p-5 rounded-md backdrop-blur;
   }
 }
