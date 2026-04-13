@@ -8,10 +8,12 @@ type AuthButtonProps = {
 export function AuthButtons({ openLogin, openRegister }: AuthButtonProps) {
   return (
     <>
-      <Button variant="ghost" onClick={openLogin}>
+      <Button size="lg" variant="outline" onClick={openLogin}>
         Увійти
       </Button>
-      <Button onClick={openRegister}>Реєстрація</Button>
+      <Button size="lg" onClick={openRegister}>
+        Реєстрація
+      </Button>
     </>
   );
 }

@@ -15,19 +15,16 @@ interface CounterProps {
 
 const sizeConfig = {
   sm: {
-    button: 'h-6 w-6',
-    icon: 'h-3 w-3',
-    text: 'text-sm',
+    button: 'size-6',
+    text: 'size-6',
   },
   md: {
-    button: 'h-8 w-8',
-    icon: 'h-4 w-4',
-    text: 'text-lg',
+    button: 'size-8',
+    text: 'size-8',
   },
   lg: {
-    button: 'h-10 w-10',
-    icon: 'h-5 w-5',
-    text: 'text-xl',
+    button: 'size-12',
+    text: 'size-12',
   },
 };
 
@@ -50,7 +47,10 @@ export function Counter({
   };
 
   return (
-    <div className={cn('inline-flex items-center', className)} role="group">
+    <div
+      className={cn('bg-background flex items-center', className)}
+      role="group"
+    >
       <Button
         variant="outline"
         size="icon"
@@ -58,19 +58,19 @@ export function Counter({
         onClick={() => update(count - step)}
         disabled={count <= min}
       >
-        <Minus className={config.icon} />
+        <Minus className="size-4" />
       </Button>
 
-      <span
+      <div
         className={cn(
-          'min-w-[2.5rem] text-center font-semibold tabular-nums text-foreground select-none',
+          'flex items-center justify-center text-base font-semibold text-foreground border-input border-y',
           config.text
         )}
         aria-live="polite"
         aria-atomic="true"
       >
         {count}
-      </span>
+      </div>
 
       <Button
         variant="outline"
@@ -79,7 +79,7 @@ export function Counter({
         onClick={() => update(count + step)}
         disabled={count >= max}
       >
-        <Plus className={config.icon} />
+        <Plus className="size-4" />
       </Button>
     </div>
   );

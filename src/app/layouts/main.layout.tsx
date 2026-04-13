@@ -5,14 +5,16 @@ import { DialogsProvider } from '../providers/dialogs';
 
 export function MainLayout() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen py-4 container mx-auto">
       <Header />
 
-      <Outlet />
-
-      <DialogsProvider />
+      <main className="flex-1 py-6 sm:py-8">
+        <Outlet />
+      </main>
 
       <Footer />
+
+      <DialogsProvider />
     </div>
   );
 }

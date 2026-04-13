@@ -1,59 +1,33 @@
-import { LogOut, ShoppingCart, User } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 
 import { Button } from '@/shared/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/shared/ui/dropdown-menu';
-import { Badge } from '@/shared/ui/badge';
+import { useCart } from '@/features/cart/api/hooks';
+import { Spinner } from '@/shared/ui/spinner';
+import { ProfileDropdown } from './ProfileDropdown';
 
 type UserActionsProps = {
-  userName: string;
   count: number;
   onOpenCart: () => void;
   onLogout: () => void;
 };
 
-export function UserActions({
-  userName,
-  count,
-  onOpenCart,
-  onLogout,
-}: UserActionsProps) {
+export function UserActions({ count, onOpenCart, onLogout }: UserActionsProps) {
+  const { isPending } = useCart();
+
+  const cartCountLabel = count > 0 ? ` (${count})` : '';
+
   return (
     <>
       <Button
         variant="outline"
-        size="icon"
-        className="relative"
-        onClick={onOpenCart}
+        size="lg"
+        onClick={() => onOpenCart() /* TODO: Redirect to /cart */}
       >
-        <ShoppingCart />
-        {count > 0 && (
-          <Badge className="absolute -right-2 -top-2 size-5 flex items-center justify-center text-xs">
-            {count}
-          </Badge>
-        )}
+        <ShoppingCart className="size-4" />
+        Кошик{isPending ? <Spinner /> : cartCountLabel}
       </Button>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
-            <User className="h-5 w-5" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48">
-          <DropdownMenuItem disabled>
-            <span className="font-medium">{userName}</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={onLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Вийти
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <ProfileDropdown onLogout={onLogout} />
     </>
   );
 }

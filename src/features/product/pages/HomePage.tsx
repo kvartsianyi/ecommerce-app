@@ -1,10 +1,17 @@
-import { Hero, Menu } from '../components';
+import { Hero, HotDeals, Menu } from '../components';
 
 export function HomePage() {
   return (
     <>
-      <Hero />
-      <Menu />
+      <section className="section border-b-0">
+        <Hero />
+      </section>
+      <section className="section">
+        <HotDeals />
+      </section>
+      <section id="menu" className="section border-t-0">
+        <Menu />
+      </section>
     </>
   );
 }

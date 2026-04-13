@@ -1,3 +1,4 @@
 export * from './Menu';
 export * from './Hero';
-export * from './ProductCard';
+export * from './HotDeals';
+export * from './product-grid/ProductGrid';
