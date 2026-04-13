@@ -3,13 +3,15 @@ import { Hero, HotDeals, Menu } from '../components';
 export function HomePage() {
   return (
     <>
-      <section className="section">
+      <section className="section border-b-0">
         <Hero />
       </section>
-      <section className="section border-t-0">
+      <section className="section">
         <HotDeals />
       </section>
-      {/* <Menu /> */}
+      <section id="menu" className="section border-t-0">
+        <Menu />
+      </section>
     </>
   );
 }

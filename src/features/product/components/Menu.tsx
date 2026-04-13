@@ -1,21 +1,88 @@
+import { Pizza } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { Button } from '@/shared/ui/button';
-import { ProductCard } from './ProductCard';
-import { Spinner } from '@/shared/ui/spinner';
 import { useGetProducts } from '../api/hooks';
 import { useAuth } from '@/features/auth/api/hooks';
 import { useModalStore } from '@/shared/store';
 import { useAddToCart } from '@/features/cart/api/hooks';
+import { Badge } from '@/shared/ui/badge';
+import { Skeleton } from '@/shared/ui/skeleton';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectGroup,
+  SelectValue,
+} from '@/shared/ui/select';
+import { ProductGrid } from './ProductGrid';
 
 const categories = [
-  { id: 'all', nameUk: 'Всі' },
-  { id: 'classic', nameUk: 'Класичні' },
-  { id: 'premium', nameUk: 'Преміум' },
-  { id: 'spicy', nameUk: 'Гострі' },
-  { id: 'vegetarian', nameUk: 'Вегетаріанські' },
+  { id: 'all', label: 'Усі' },
+  { id: 'classic', label: 'Класика' },
+  { id: 'spicy', label: 'Гострі' },
+  { id: 'vegetarian', label: 'Вегетаріанські' },
+  { id: 'premium', label: 'Преміум' },
 ];
+
+const isCategoriesLoading = false;
+
+type CategoryFiltersProps = {
+  selectedCategory: string;
+  onSelect: (categoryId: string) => void;
+  isLoading: boolean;
+};
+
+function CategoryFilters({
+  selectedCategory,
+  onSelect,
+  isLoading,
+}: CategoryFiltersProps) {
+  if (isLoading) {
+    return <Skeleton className="h-9 w-46" />;
+  }
+
+  return (
+    <Select defaultValue={categories[0].id} onValueChange={onSelect}>
+      <SelectTrigger className="w-full">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Категорії</SelectLabel>
+          {categories.map((category) => (
+            <SelectItem key={category.id} value={category.id}>
+              {category.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
+
+function Sorting() {
+  return (
+    <Select>
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder="Сортувати" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Сортування</SelectLabel>
+          <SelectItem key="price-asc" value="price-asc">
+            За ціною (зростання)
+          </SelectItem>
+          <SelectItem key="price-desc" value="price-desc">
+            За ціною (спадання)
+          </SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
 
 export function Menu() {
   const openLogin = useModalStore((state) => state.openLogin);
@@ -24,7 +91,7 @@ export function Menu() {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const { isAuthenticated } = useAuth();
-  const { data, isPending } = useGetProducts();
+  const { data, isPending: isProductsLoading } = useGetProducts();
   const { mutateAsync: addToCart } = useAddToCart();
 
   const products = data?.data ?? [];
@@ -44,45 +111,39 @@ export function Menu() {
   };
 
   return (
-    <section id="menu" className="py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="mb-12 text-center">
-          <h2 className="text-balance text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
-            Наше меню
-          </h2>
-          <p className="mt-4 text-pretty text-muted-foreground">
-            Оберіть свою улюблену піцу з нашого великого асортименту
-          </p>
-        </div>
-
-        <div className="mb-8 flex flex-wrap justify-center gap-2">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant={selectedCategory === category.id ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory(category.id)}
-            >
-              {category.nameUk}
-            </Button>
-          ))}
-        </div>
-
-        {isPending && (
-          <div className="flex justify-center pt-4">
-            <Spinner className="size-8" />
+    <div className="space-y-8">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div className="space-y-3">
+          <Badge className="px-3 py-2 text-sm font-semibold uppercase tracking-[0.25em] [&>svg]:size-4">
+            <Pizza className="text-yellow-600" />
+            Меню
+          </Badge>
+          <div>
+            <h3 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              Що ми готуємо
+            </h3>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+              Обирайте фірмові піци за категоріями та додавайте їх у кошик із
+              потрібною кількістю та варіантом.
+            </p>
           </div>
-        )}
+        </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              OnAddToCart={handleAddToCart}
-            />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <CategoryFilters
+            selectedCategory={selectedCategory}
+            onSelect={setSelectedCategory}
+            isLoading={isCategoriesLoading}
+          />
+          <Sorting />
         </div>
       </div>
-    </section>
+
+      <ProductGrid
+        items={products}
+        onAddToCart={handleAddToCart}
+        isLoading={isProductsLoading}
+      />
+    </div>
   );
 }
