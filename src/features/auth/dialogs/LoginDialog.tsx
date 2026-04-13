@@ -124,7 +124,13 @@ export function LoginDialog({
               onClick={form.handleSubmit}
               disabled={isPendingSubmit}
             >
-              {isPendingSubmit && <Spinner data-icon="inline-start" />} Увійти
+              {isPendingSubmit ? (
+                <>
+                  <Spinner /> Вхід...
+                </>
+              ) : (
+                'Увійти'
+              )}
             </Button>
             <FieldSeparator>АБО</FieldSeparator>
             <Button

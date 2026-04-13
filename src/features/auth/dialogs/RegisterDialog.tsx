@@ -218,8 +218,13 @@ export function RegisterDialog({
               onClick={form.handleSubmit}
               disabled={isPendingSubmit}
             >
-              {isPendingSubmit && <Spinner data-icon="inline-start" />}{' '}
-              Зареєструватися
+              {isPendingSubmit ? (
+                <>
+                  <Spinner /> Реєстрація...
+                </>
+              ) : (
+                'Зареєструватися'
+              )}
             </Button>
             <div className="text-center text-sm">
               <span className="text-muted-foreground">
