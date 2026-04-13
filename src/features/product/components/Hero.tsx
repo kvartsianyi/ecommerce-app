@@ -173,7 +173,7 @@ export function Hero() {
     <div className="grid gap-5 xl:grid-cols-[2fr_3fr] xl:items-start">
       <div className="space-y-5">
         <Badge className="px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]">
-          <Leaf className="text-green-700" /> Свіжо сьогодні
+          <Leaf className="text-green-600" /> Свіжо сьогодні
         </Badge>
         <div className="space-y-4">
           <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
@@ -186,21 +186,25 @@ export function Hero() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Link to="/" hash="menu">
-            <Button size="lg" className="h-12 w-full px-7 text-base sm:w-auto">
+          <Button
+            size="lg"
+            className="h-12 w-full has-[>svg]:px-7 text-base sm:w-auto"
+            asChild
+          >
+            <Link to="/" hash="menu">
               Переглянути меню
               <ArrowRight className="size-4" />
-            </Button>
-          </Link>
-          <Link to="/" hash="delivery">
-            <Button
-              variant="outline"
-              size="lg"
-              className="h-12 w-full px-7 text-base sm:w-auto"
-            >
+            </Link>
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="h-12 w-full px-7 text-base sm:w-auto"
+          >
+            <Link to="/" hash="delivery">
               Доставка
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
