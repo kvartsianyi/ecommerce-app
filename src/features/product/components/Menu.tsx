@@ -17,7 +17,7 @@ import {
   SelectGroup,
   SelectValue,
 } from '@/shared/ui/select';
-import { ProductGrid } from './ProductGrid';
+import { ProductGrid } from './product-grid';
 
 const categories = [
   { id: 'all', label: 'Усі' },
@@ -45,7 +45,7 @@ function CategoryFilters({
   }
 
   return (
-    <Select defaultValue={categories[0].id} onValueChange={onSelect}>
+    <Select defaultValue={selectedCategory} onValueChange={onSelect}>
       <SelectTrigger className="w-full">
         <SelectValue />
       </SelectTrigger>
@@ -88,8 +88,8 @@ export function Menu() {
   const openLogin = useModalStore((state) => state.openLogin);
   const openCart = useModalStore((state) => state.openCart);
 
-  const [selectedCategory, setSelectedCategory] = useState('all');
-
+  const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
+  const [addProductId, setAddProductId] = useState<number | null>(null);
   const { isAuthenticated } = useAuth();
   const { data, isPending: isProductsLoading } = useGetProducts();
   const { mutateAsync: addToCart } = useAddToCart();
@@ -102,12 +102,17 @@ export function Menu() {
       return;
     }
 
+    setAddProductId(id);
+
     try {
       await addToCart({ id, quantity });
-      openCart();
     } catch {
       toast.error('Помилка додавання в кошик');
+    } finally {
+      setAddProductId(null);
     }
+
+    openCart();
   };
 
   return (
@@ -143,6 +148,7 @@ export function Menu() {
         items={products}
         onAddToCart={handleAddToCart}
         isLoading={isProductsLoading}
+        addProductId={addProductId}
       />
     </div>
   );
