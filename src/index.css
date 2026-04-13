@@ -234,6 +234,6 @@
   }
 
   .section {
-    @apply border bg-background/35 p-5 rounded-md backdrop-blur;
+    @apply border bg-background/35 p-5 rounded-md;
   }
 }
