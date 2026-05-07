@@ -1,3 +1,5 @@
+import { ArrowRight } from 'lucide-react';
+
 import { Button } from '@/shared/ui/button';
 import {
   Sheet,
@@ -52,7 +54,7 @@ export function Cart({ open, onOpenChange, onCheckout }: CartProps) {
               </span>
             </div>
             <Button className="w-full" size="lg" onClick={onCheckout}>
-              Оформити замовлення
+              Перейти до замовлення <ArrowRight />
             </Button>
           </SheetFooter>
         )}

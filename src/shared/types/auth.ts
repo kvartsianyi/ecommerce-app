@@ -12,6 +12,7 @@ export type User = {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   role: string;
   isEmailConfirmed: boolean;
   createdAt: string;

@@ -1,14 +1,11 @@
-import { useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { toast } from 'sonner';
 
 import { LoginDialog, RegisterDialog } from '@/features/auth/dialogs';
-import { OrderDialog } from '@/features/order/dialogs';
 import { Cart } from '@/features/cart/components';
 import { useModalStore } from '@/shared/store';
-import { useAuth } from '@/features/auth/api/hooks';
-import { useCart } from '@/features/cart/api/hooks';
 import { useLogin, useRegistration } from '@/features/auth/api/hooks';
+import { router } from '../router';
 
 export function DialogsProvider() {
   const { isLoginOpen, openLogin } = useModalStore(
@@ -32,13 +29,6 @@ export function DialogsProvider() {
       closeCart: state.closeCart,
     }))
   );
-
-  const [isOrderOpen, setIsOrderOpen] = useState(false);
-
-  const { isAuthenticated } = useAuth();
-  const { data } = useCart();
-
-  const items = data?.items ?? [];
 
   const onLoginOpenChange = (open: boolean) =>
     useModalStore.setState({
@@ -71,7 +61,7 @@ export function DialogsProvider() {
 
   const handleCheckout = () => {
     closeCart();
-    setIsOrderOpen(true);
+    router.navigate({ to: '/checkout' });
   };
 
   return (
@@ -96,18 +86,6 @@ export function DialogsProvider() {
         open={isCartOpen}
         onOpenChange={onCartOpenChange}
         onCheckout={handleCheckout}
-      />
-
-      <OrderDialog
-        open={isOrderOpen}
-        onOpenChange={setIsOrderOpen}
-        cart={items}
-        onOrderComplete={() => {}}
-        isAuthenticated={isAuthenticated}
-        onLoginRequired={() => {
-          setIsOrderOpen(false);
-          openLogin();
-        }}
       />
     </>
   );
