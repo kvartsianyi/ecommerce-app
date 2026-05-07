@@ -1,13 +1,18 @@
 import { CreditCard } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { RadioGroup, RadioGroupItem } from '@/shared/ui/radio-group';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import {
   Field,
   FieldLabel,
   FieldDescription,
   FieldContent,
-} from '@/shared/ui/field';
+} from '@/shared/components/ui/field';
 import { withForm, CheckoutFormOpts } from '../forms/checkout-form';
 import { PAYMENT_OPTIONS } from '../constants';
 

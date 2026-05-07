@@ -1,6 +1,6 @@
 import { Moon, Sun } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import { useTheme } from '@/app/providers/theme/useTheme';
 
 export function ThemeButton() {

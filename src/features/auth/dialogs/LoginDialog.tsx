@@ -2,20 +2,20 @@ import { useEffect } from 'react';
 import { useForm } from '@tanstack/react-form';
 
 import type { LoginBody } from '../types';
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/shared/ui/dialog';
+} from '@/shared/components/ui/dialog';
 import { loginSchema } from '../schemas';
-import { Spinner } from '@/shared/ui/spinner';
-import { FormField } from '@/shared/ui/FormField';
-import { FieldGroup, FieldSeparator } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
-import { GoogleIcon } from '@/shared/ui/GoogleIcon';
+import { Spinner } from '@/shared/components/ui/spinner';
+import { FormField } from '@/shared/components/ui/FormField';
+import { FieldGroup, FieldSeparator } from '@/shared/components/ui/field';
+import { Input } from '@/shared/components/ui/input';
+import { GoogleIcon } from '@/shared/components/ui/GoogleIcon';
 
 type LoginDialogProps = {
   open: boolean;

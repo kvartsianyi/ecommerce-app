@@ -1,8 +1,13 @@
 import { MapPin } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Input } from '@/shared/ui/input';
-import { FormField } from '@/shared/ui/FormField';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card';
+import { Input } from '@/shared/components/ui/input';
+import { FormField } from '@/shared/components/ui/FormField';
 import { withForm, CheckoutFormOpts } from '../forms/checkout-form';
 
 export const DeliveryAddressSection = withForm({

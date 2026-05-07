@@ -1,13 +1,18 @@
 import { MessageSquare } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Textarea } from '@/shared/ui/textarea';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card';
+import { Textarea } from '@/shared/components/ui/textarea';
 import {
   Field,
   FieldLabel,
   FieldDescription,
   FieldError,
-} from '@/shared/ui/field';
+} from '@/shared/components/ui/field';
 import { withForm, CheckoutFormOpts } from '../forms/checkout-form';
 
 export const CommentSection = withForm({

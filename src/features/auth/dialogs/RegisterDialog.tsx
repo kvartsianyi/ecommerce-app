@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
 import { useForm } from '@tanstack/react-form';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/shared/ui/dialog';
+} from '@/shared/components/ui/dialog';
 import { registrationSchema } from '../schemas';
-import { FormField } from '@/shared/ui/FormField';
-import { Spinner } from '@/shared/ui/spinner';
-import { Input } from '@/shared/ui/input';
-import { FieldGroup } from '@/shared/ui/field';
-import { PhoneInput } from '@/shared/ui/PhoneInput';
+import { FormField } from '@/shared/components/ui/FormField';
+import { Spinner } from '@/shared/components/ui/spinner';
+import { Input } from '@/shared/components/ui/input';
+import { FieldGroup } from '@/shared/components/ui/field';
+import { PhoneInput } from '@/shared/components/ui/PhoneInput';
 import { normalizePhoneNumber } from '@/shared/utils';
 import type { RegistrationBody } from '../types';
 

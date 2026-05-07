@@ -1,8 +1,13 @@
 import { ArrowRight, ShoppingBag } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Separator } from '@/shared/ui/separator';
-import { Button } from '@/shared/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card';
+import { Separator } from '@/shared/components/ui/separator';
+import { Button } from '@/shared/components/ui/button';
 import type { CartItem } from '@/shared/types';
 import defaultPizzaImage from '@/assets/pizza-image.avif';
 

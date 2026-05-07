@@ -1,10 +1,15 @@
 import { User } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Input } from '@/shared/ui/input';
-import { FieldGroup } from '@/shared/ui/field';
-import { FormField } from '@/shared/ui/FormField';
-import { PhoneInput } from '@/shared/ui/PhoneInput';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card';
+import { Input } from '@/shared/components/ui/input';
+import { FieldGroup } from '@/shared/components/ui/field';
+import { FormField } from '@/shared/components/ui/FormField';
+import { PhoneInput } from '@/shared/components/ui/PhoneInput';
 import { withForm, CheckoutFormOpts } from '../forms/checkout-form';
 
 export const UserInfoSection = withForm({

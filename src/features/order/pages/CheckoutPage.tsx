@@ -6,7 +6,7 @@ import {
   PickupMethodSection,
   UserInfoSection,
 } from '../components';
-import { Separator } from '@/shared/ui/separator';
+import { Separator } from '@/shared/components/ui/separator';
 import { useAuth } from '@/features/auth/api/hooks';
 import { useAppForm } from '../forms/checkout-form/form';
 import { CheckoutFormOpts } from '../forms/checkout-form/form-options';

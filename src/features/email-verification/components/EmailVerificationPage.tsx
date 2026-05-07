@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import { useCountdown } from '@/shared/hooks/useCountdown';
 import { ERROR_KEYS } from '@/shared/constants';
 import { EmailVerificationCard } from './EmailVerificationCard';

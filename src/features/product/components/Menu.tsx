@@ -6,8 +6,8 @@ import { useGetProducts } from '../api/hooks';
 import { useAuth } from '@/features/auth/api/hooks';
 import { useModalStore } from '@/shared/store';
 import { useAddToCart } from '@/features/cart/api/hooks';
-import { Badge } from '@/shared/ui/badge';
-import { Skeleton } from '@/shared/ui/skeleton';
+import { Badge } from '@/shared/components/ui/badge';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import {
   Select,
   SelectContent,
@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectGroup,
   SelectValue,
-} from '@/shared/ui/select';
+} from '@/shared/components/ui/select';
 import { ProductGrid } from './product-grid';
 
 const categories = [

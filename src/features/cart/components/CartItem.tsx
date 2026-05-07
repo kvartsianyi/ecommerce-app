@@ -1,10 +1,10 @@
 import { Trash2 } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import { useRemoveFromCart, useUpdateQuantity } from '../api/hooks';
 import type { CartItem } from '@/shared/types';
-import { Spinner } from '@/shared/ui/spinner';
-import { Counter } from '@/shared/ui/Counter';
+import { Spinner } from '@/shared/components/ui/spinner';
+import { Counter } from '@/shared/components/ui/Counter';
 
 type CartItemProps = {
   item: CartItem;
