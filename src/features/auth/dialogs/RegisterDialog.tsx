@@ -20,7 +20,7 @@ import type { RegistrationBody } from '../types';
 
 type RegisterDialogProps = {
   open: boolean;
-  isPendingSubmit: boolean;
+  isSubmitting: boolean;
   onOpenChange: (open: boolean) => void;
   onRegister: (userDetails: RegistrationBody) => void;
   onSwitchToLogin: () => void;
@@ -28,7 +28,7 @@ type RegisterDialogProps = {
 
 export function RegisterDialog({
   open,
-  isPendingSubmit,
+  isSubmitting,
   onOpenChange,
   onRegister,
   onSwitchToLogin,
@@ -216,9 +216,9 @@ export function RegisterDialog({
               type="submit"
               className="w-full"
               onClick={form.handleSubmit}
-              disabled={isPendingSubmit}
+              disabled={isSubmitting}
             >
-              {isPendingSubmit ? (
+              {isSubmitting ? (
                 <>
                   <Spinner /> Реєстрація...
                 </>

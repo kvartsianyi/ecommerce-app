@@ -45,7 +45,7 @@ export function DialogsProvider() {
       isCartOpen: open,
     });
 
-  const { mutate: handleLogin, isPending: isLoginPending } = useLogin();
+  const { mutateAsync: handleLogin } = useLogin();
 
   const { mutate: handleRegistration, isPending: isRegistrationPending } =
     useRegistration({
@@ -68,7 +68,6 @@ export function DialogsProvider() {
     <>
       <LoginDialog
         open={isLoginOpen}
-        isPendingSubmit={isLoginPending}
         onOpenChange={onLoginOpenChange}
         onLogin={handleLogin}
         onSwitchToRegister={openRegister}
@@ -76,7 +75,7 @@ export function DialogsProvider() {
 
       <RegisterDialog
         open={isRegisterOpen}
-        isPendingSubmit={isRegistrationPending}
+        isSubmitting={isRegistrationPending}
         onOpenChange={onRegisterOpenChange}
         onRegister={handleRegistration}
         onSwitchToLogin={openLogin}
