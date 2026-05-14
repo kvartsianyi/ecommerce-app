@@ -14,10 +14,12 @@ import { useStore } from '@tanstack/react-form';
 import { useCart } from '@/features/cart/api/hooks';
 import { PICKUP_METHODS } from '../constants';
 import { checkoutSchema } from '../schemas';
+import { useCheckout } from '../api/hooks';
 
 export function CheckoutPage() {
   const { user } = useAuth();
   const { data } = useCart();
+  const { mutateAsync: checkout } = useCheckout();
 
   const subtotal = data?.totalAmount ?? 0;
   const items = data?.items ?? [];
@@ -37,9 +39,7 @@ export function CheckoutPage() {
     validators: {
       onSubmit: checkoutSchema,
     },
-    onSubmit: async ({ value }) => {
-      console.log(value);
-    },
+    onSubmit: async ({ value }) => checkout(),
   });
 
   const pickupMethod = useStore(form.store, (s) => s.values.pickupMethod);
