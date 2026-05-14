@@ -2,22 +2,20 @@ import React from 'react';
 
 import { useFieldContext } from './form-context';
 import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field';
-import { Input } from '../ui/input';
+import { PhoneInput } from '../ui/PhoneInput';
 
-type TextFieldProps = {
+type PhoneFieldProps = {
   label?: string;
-  labelAction?: React.ReactNode;
   required?: boolean;
   description?: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+} & React.ComponentProps<'input'>;
 
-export function TextField({
+export function PhoneField({
   label,
-  labelAction,
   required = true,
   description,
   ...inputProps
-}: TextFieldProps) {
+}: PhoneFieldProps) {
   const field = useFieldContext<string>();
 
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
@@ -28,16 +26,18 @@ export function TextField({
         <FieldLabel className="gap-1" htmlFor={field.name}>
           {label}
           {required && <span className="text-destructive">*</span>}
-          {labelAction && <div className="ml-auto">{labelAction}</div>}
         </FieldLabel>
       )}
-      <Input
+      <PhoneInput
         id={field.name}
         name={field.name}
         value={field.state.value}
-        onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
+        placeholder="(XX) XXX XX XX"
         aria-invalid={isInvalid}
+        maxLength={9}
+        required={required}
         {...inputProps}
       />
 
