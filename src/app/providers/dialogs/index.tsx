@@ -45,19 +45,18 @@ export function DialogsProvider() {
       isCartOpen: open,
     });
 
-  const { mutate: handleLogin, isPending: isLoginPending } = useLogin();
+  const { mutateAsync: handleLogin } = useLogin();
 
-  const { mutate: handleRegistration, isPending: isRegistrationPending } =
-    useRegistration({
-      onSuccess: async () => {
-        closeRegister();
+  const { mutateAsync: handleRegistration } = useRegistration({
+    onSuccess: async () => {
+      closeRegister();
 
-        toast.success('Реєстрація успішна', {
-          description:
-            'Перевірте вашу електронну пошту для підтвердження облікового запису.',
-        });
-      },
-    });
+      toast.success('Реєстрація успішна', {
+        description:
+          'Перевірте вашу електронну пошту для підтвердження облікового запису.',
+      });
+    },
+  });
 
   const handleCheckout = () => {
     closeCart();
@@ -68,7 +67,6 @@ export function DialogsProvider() {
     <>
       <LoginDialog
         open={isLoginOpen}
-        isPendingSubmit={isLoginPending}
         onOpenChange={onLoginOpenChange}
         onLogin={handleLogin}
         onSwitchToRegister={openRegister}
@@ -76,7 +74,6 @@ export function DialogsProvider() {
 
       <RegisterDialog
         open={isRegisterOpen}
-        isPendingSubmit={isRegistrationPending}
         onOpenChange={onRegisterOpenChange}
         onRegister={handleRegistration}
         onSwitchToLogin={openLogin}

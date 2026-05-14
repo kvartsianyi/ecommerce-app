@@ -1,8 +1,8 @@
 import { ShoppingCart } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import { useCart } from '@/features/cart/api/hooks';
-import { Spinner } from '@/shared/ui/spinner';
+import { Spinner } from '@/shared/components/ui/spinner';
 import { ProfileDropdown } from './ProfileDropdown';
 
 type UserActionsProps = {

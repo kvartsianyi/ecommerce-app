@@ -1,8 +1,8 @@
 import { Flame } from 'lucide-react';
 
-import { Badge } from '@/shared/ui/badge';
-import { Card, CardContent } from '@/shared/ui/card';
-import { Skeleton } from '@/shared/ui/skeleton';
+import { Badge } from '@/shared/components/ui/badge';
+import { Card, CardContent } from '@/shared/components/ui/card';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import { useGetProducts } from '../api/hooks';
 import type { Product } from '../types';
 

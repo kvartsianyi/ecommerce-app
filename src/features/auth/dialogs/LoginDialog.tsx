@@ -1,38 +1,35 @@
 import { useEffect } from 'react';
-import { useForm } from '@tanstack/react-form';
+import { useStore } from '@tanstack/react-form';
 
 import type { LoginBody } from '../types';
-import { Button } from '@/shared/ui/button';
+import type { TokenPair } from '@/shared/types/auth';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/shared/ui/dialog';
+} from '@/shared/components/ui/dialog';
 import { loginSchema } from '../schemas';
-import { Spinner } from '@/shared/ui/spinner';
-import { FormField } from '@/shared/ui/FormField';
-import { FieldGroup, FieldSeparator } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
-import { GoogleIcon } from '@/shared/ui/GoogleIcon';
+import { FieldGroup, FieldSeparator } from '@/shared/components/ui/field';
+import { GoogleIcon } from '@/shared/components/ui/GoogleIcon';
+import { useAppForm } from '@/shared/components/form';
 
 type LoginDialogProps = {
   open: boolean;
-  isPendingSubmit: boolean;
   onOpenChange: (open: boolean) => void;
-  onLogin: ({ email, password }: LoginBody) => void;
+  onLogin: (data: LoginBody) => Promise<TokenPair>;
   onSwitchToRegister: () => void;
 };
 
 export function LoginDialog({
   open,
-  isPendingSubmit,
   onOpenChange,
   onLogin,
   onSwitchToRegister,
 }: LoginDialogProps) {
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       email: '',
       password: '',
@@ -42,6 +39,11 @@ export function LoginDialog({
     },
     onSubmit: async ({ value }) => onLogin(value),
   });
+
+  const isSubmitting = useStore(
+    form.store,
+    (state) => state.isSubmitting
+  );
 
   useEffect(() => {
     if (!open) form.reset();
@@ -60,37 +62,25 @@ export function LoginDialog({
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            form.handleSubmit();
           }}
           className="space-y-4"
         >
           <FieldGroup>
-            <form.Field
+            <form.AppField
               name="email"
               children={(field) => (
-                <FormField
-                  field={field}
+                <field.TextField
                   label="Електронна пошта"
-                  required={true}
-                  children={(control) => (
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      type="email"
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={control.isInvalid}
-                      placeholder="your@email.com"
-                    />
-                  )}
+                  type="email"
+                  placeholder="example@email.com"
                 />
               )}
             />
-            <form.Field
+            <form.AppField
               name="password"
               children={(field) => (
-                <FormField
-                  field={field}
+                <field.TextField
                   label="Пароль"
                   labelAction={
                     <Button
@@ -102,41 +92,21 @@ export function LoginDialog({
                       Забули пароль?
                     </Button>
                   }
-                  required={true}
-                  children={(control) => (
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      type="password"
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={control.isInvalid}
-                      placeholder="●●●●●●●●"
-                    />
-                  )}
+                  type="password"
+                  placeholder="●●●●●●●●"
                 />
               )}
             />
-            <Button
-              type="submit"
-              className="w-full"
-              onClick={form.handleSubmit}
-              disabled={isPendingSubmit}
-            >
-              {isPendingSubmit ? (
-                <>
-                  <Spinner /> Вхід...
-                </>
-              ) : (
-                'Увійти'
-              )}
-            </Button>
+            <form.AppForm>
+              <form.SubmitButton className="w-full" loadingText="Вхід...">
+                Увійти
+              </form.SubmitButton>
+            </form.AppForm>
             <FieldSeparator>АБО</FieldSeparator>
             <Button
               variant="outline"
               className="w-full"
-              disabled={isPendingSubmit}
+              disabled={isSubmitting}
             >
               <GoogleIcon className="w-5 h-5" /> Увійти через Google
             </Button>

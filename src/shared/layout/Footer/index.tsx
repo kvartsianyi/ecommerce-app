@@ -1,7 +1,7 @@
 import { Clock3, Mail, MapPin, Phone } from 'lucide-react';
 import { Logo } from '../Header/Logo';
 import { ActionLink } from './ActionLink';
-import { Separator } from '@/shared/ui/separator';
+import { Separator } from '@/shared/components/ui/separator';
 import { InfoCard } from './InfoCard';
 
 export function Footer() {

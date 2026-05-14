@@ -7,12 +7,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/shared/ui/card';
-import { Button } from '@/shared/ui/button';
-// import { Badge } from '@/shared/ui/badge';
-import { Counter } from '@/shared/ui/Counter';
+} from '@/shared/components/ui/card';
+import { Button } from '@/shared/components/ui/button';
+// import { Badge } from '@/shared/components/ui/badge';
+import { Counter } from '@/shared/components/ui/Counter';
 // import { CATEGORY_BADGE_CONFIG } from '../../constants';
-import { Spinner } from '@/shared/ui/spinner';
+import { Spinner } from '@/shared/components/ui/spinner';
 import type { Product } from '../../types';
 import defaultPizzaImage from '@/assets/pizza-image.avif';
 

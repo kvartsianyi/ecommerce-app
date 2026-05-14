@@ -1,10 +1,10 @@
 import { ArrowRight, Clock3, Leaf, MapPin, Star } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent } from '@/shared/ui/card';
-import { Badge } from '@/shared/ui/badge';
-import { Skeleton } from '@/shared/ui/skeleton';
+import { Button } from '@/shared/components/ui/button';
+import { Card, CardContent } from '@/shared/components/ui/card';
+import { Badge } from '@/shared/components/ui/badge';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import { useGetProducts } from '../api/hooks';
 import type { Product } from '../types';
 

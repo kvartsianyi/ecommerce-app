@@ -1,13 +1,13 @@
 import { ArrowRight } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import {
   Sheet,
   SheetContent,
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from '@/shared/ui/sheet';
+} from '@/shared/components/ui/sheet';
 import { useCart } from '../api/hooks';
 import type { Cart } from '@/shared/types';
 import { CartItem } from './CartItem';

@@ -13,9 +13,13 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/shared/ui/dropdown-menu';
-import { Button } from '@/shared/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+} from '@/shared/components/ui/dropdown-menu';
+import { Button } from '@/shared/components/ui/button';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/shared/components/ui/avatar';
 import { useAuth } from '@/features/auth/api/hooks/useAuth';
 
 type ProfileDropdownProps = {

@@ -21,8 +21,8 @@ export const checkoutSchema = z.object({
   paymentMethod: z.enum(Object.values(PAYMENT_METHODS)),
   comment: z
     .string()
-    .min(3, 'Коментар повинно містити не менше 3 символів.')
-    .max(100, 'Коментар повинно містити не більше 100 символів.')
+    .min(3, 'Коментар повинен містити не менше 3 символів.')
+    .max(100, 'Коментар повинен містити не більше 100 символів.')
     .optional()
     .or(z.literal('')),
 });

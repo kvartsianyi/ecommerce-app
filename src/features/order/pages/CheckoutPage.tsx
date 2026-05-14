@@ -1,3 +1,4 @@
+import { useAppForm } from '@/shared/components/form';
 import {
   CommentSection,
   DeliveryAddressSection,
@@ -6,18 +7,19 @@ import {
   PickupMethodSection,
   UserInfoSection,
 } from '../components';
-import { Separator } from '@/shared/ui/separator';
+import { Separator } from '@/shared/components/ui/separator';
 import { useAuth } from '@/features/auth/api/hooks';
-import { useAppForm } from '../forms/checkout-form/form';
 import { CheckoutFormOpts } from '../forms/checkout-form/form-options';
 import { useStore } from '@tanstack/react-form';
 import { useCart } from '@/features/cart/api/hooks';
 import { PICKUP_METHODS } from '../constants';
 import { checkoutSchema } from '../schemas';
+import { useCheckout } from '../api/hooks';
 
 export function CheckoutPage() {
   const { user } = useAuth();
   const { data } = useCart();
+  const { mutateAsync: checkout } = useCheckout();
 
   const subtotal = data?.totalAmount ?? 0;
   const items = data?.items ?? [];
@@ -37,10 +39,7 @@ export function CheckoutPage() {
     validators: {
       onSubmit: checkoutSchema,
     },
-    onSubmit: async ({ value }) => {
-      console.log(value);
-    },
-    onSubmitInvalid: () => form.validate('submit'),
+    onSubmit: async ({ value }) => checkout(),
   });
 
   const pickupMethod = useStore(form.store, (s) => s.values.pickupMethod);
@@ -84,6 +83,7 @@ export function CheckoutPage() {
             {/* Mobile Order Summary */}
             <div className="lg:hidden">
               <OrderSummary
+                form={form}
                 items={items}
                 subtotal={subtotal}
                 shipping={shipping}
@@ -96,6 +96,7 @@ export function CheckoutPage() {
           <div className="hidden lg:block lg:col-span-2">
             <div className="sticky top-8">
               <OrderSummary
+                form={form}
                 items={items}
                 subtotal={subtotal}
                 shipping={shipping}

@@ -1,7 +1,7 @@
 import { CheckCircle2, MailWarning } from 'lucide-react';
 
 import { ERROR_MESSAGES, SOMETHING_WENT_WRONG } from '@/shared/constants';
-import { Spinner } from '@/shared/ui/spinner';
+import { Spinner } from '@/shared/components/ui/spinner';
 
 type MutationStatus = 'pending' | 'success' | 'error' | 'idle';
 

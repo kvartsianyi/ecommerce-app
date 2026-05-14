@@ -1,6 +1,6 @@
 import { Minus, Plus } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/shared/utils';
 
 interface CounterProps {

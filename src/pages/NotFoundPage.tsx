@@ -1,7 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/components/ui/button';
 
 export function NotFoundPage() {
   return (
