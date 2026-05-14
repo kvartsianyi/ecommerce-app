@@ -28,6 +28,8 @@ export function PhoneField({
           {required && <span className="text-destructive">*</span>}
         </FieldLabel>
       )}
+      {description && <FieldDescription>{description}</FieldDescription>}
+
       <PhoneInput
         id={field.name}
         name={field.name}
@@ -41,7 +43,6 @@ export function PhoneField({
         {...inputProps}
       />
 
-      {description && <FieldDescription>{description}</FieldDescription>}
       {isInvalid && <FieldError errors={field.state.meta.errors} />}
     </Field>
   );

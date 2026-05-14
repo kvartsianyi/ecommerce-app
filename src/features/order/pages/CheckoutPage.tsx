@@ -1,3 +1,4 @@
+import { useAppForm } from '@/shared/components/form';
 import {
   CommentSection,
   DeliveryAddressSection,
@@ -8,7 +9,6 @@ import {
 } from '../components';
 import { Separator } from '@/shared/components/ui/separator';
 import { useAuth } from '@/features/auth/api/hooks';
-import { useAppForm } from '../forms/checkout-form/form';
 import { CheckoutFormOpts } from '../forms/checkout-form/form-options';
 import { useStore } from '@tanstack/react-form';
 import { useCart } from '@/features/cart/api/hooks';
@@ -40,7 +40,6 @@ export function CheckoutPage() {
     onSubmit: async ({ value }) => {
       console.log(value);
     },
-    onSubmitInvalid: () => form.validate('submit'),
   });
 
   const pickupMethod = useStore(form.store, (s) => s.values.pickupMethod);
@@ -84,6 +83,7 @@ export function CheckoutPage() {
             {/* Mobile Order Summary */}
             <div className="lg:hidden">
               <OrderSummary
+                form={form}
                 items={items}
                 subtotal={subtotal}
                 shipping={shipping}
@@ -96,6 +96,7 @@ export function CheckoutPage() {
           <div className="hidden lg:block lg:col-span-2">
             <div className="sticky top-8">
               <OrderSummary
+                form={form}
                 items={items}
                 subtotal={subtotal}
                 shipping={shipping}

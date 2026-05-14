@@ -6,9 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card';
-import { Input } from '@/shared/components/ui/input';
-import { FormField } from '@/shared/components/ui/FormField';
-import { withForm, CheckoutFormOpts } from '../forms/checkout-form';
+import { withForm } from '@/shared/components/form';
+import { CheckoutFormOpts } from '../forms/checkout-form';
 
 export const DeliveryAddressSection = withForm({
   ...CheckoutFormOpts,
@@ -21,24 +20,12 @@ export const DeliveryAddressSection = withForm({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form.Field
+        <form.AppField
           name="deliveryAddress"
           children={(field) => (
-            <FormField
-              field={field}
+            <field.TextField
               label="Вулиця та номер будинку"
-              required={true}
-              children={(control) => (
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  aria-invalid={control.isInvalid}
-                  placeholder="вул. Хрещатик, 1, кв. 10"
-                />
-              )}
+              placeholder="вул. Пряма, 24, кв. 10"
             />
           )}
         />

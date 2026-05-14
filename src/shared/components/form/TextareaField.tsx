@@ -1,44 +1,32 @@
-import React from 'react';
-
 import { useFieldContext } from './form-context';
 import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field';
-import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
 
-type TextFieldProps = {
+type TextareaFieldProps = {
   label?: string;
-  labelAction?: React.ReactNode;
-  required?: boolean;
   description?: string;
-} & React.ComponentProps<'input'>;
+} & React.ComponentProps<'textarea'>;
 
-export function TextField({
+export function TextareaField({
   label,
-  labelAction,
-  required = true,
   description,
   ...inputProps
-}: TextFieldProps) {
+}: TextareaFieldProps) {
   const field = useFieldContext<string>();
 
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
   return (
     <Field>
-      {label && (
-        <FieldLabel className="gap-1" htmlFor={field.name}>
-          {label}
-          {required && <span className="text-destructive">*</span>}
-          {labelAction && <div className="ml-auto">{labelAction}</div>}
-        </FieldLabel>
-      )}
+      {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
       {description && <FieldDescription>{description}</FieldDescription>}
 
-      <Input
+      <Textarea
         id={field.name}
-        name={field.name}
         value={field.state.value}
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
+        rows={4}
         aria-invalid={isInvalid}
         {...inputProps}
       />

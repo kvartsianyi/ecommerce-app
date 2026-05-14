@@ -1,40 +1,27 @@
-import {
-  Banknote,
-  CreditCard,
-  Store,
-  Truck,
-  type LucideIcon,
-} from 'lucide-react';
+import { Banknote, CreditCard, Store, Truck } from 'lucide-react';
 
 import type { PaymentMethod, PickupMethod } from '@/shared/types';
+import type { RadioOption } from '@/shared/components/form/RadioGroupField';
 
 export const PICKUP_METHODS = {
   DELIVERY: 'delivery',
   PICKUP: 'pickup',
 } as const satisfies Record<string, PickupMethod>;
 
-type PickupOption = {
-  value: PickupMethod;
-  label: string;
-  description: string;
-  icon: LucideIcon;
-  price: string;
-};
-
-export const PICKUP_OPTIONS: PickupOption[] = [
+export const PICKUP_OPTIONS: RadioOption[] = [
   {
     value: PICKUP_METHODS.DELIVERY,
     label: 'Доставка додому',
     description: 'Доставимо за вашою адресою протягом 1 год',
     icon: Truck,
-    price: '99 грн',
+    rightSection: '99 грн',
   },
   {
     value: PICKUP_METHODS.PICKUP,
     label: 'Самовивіз',
     description: 'Заберіть з нашого закладу через 15 хв після замовлення',
     icon: Store,
-    price: 'Безкоштовно',
+    rightSection: 'Безкоштовно',
   },
 ] as const;
 
@@ -43,14 +30,7 @@ export const PAYMENT_METHODS = {
   CASH: 'cash',
 } as const satisfies Record<string, PaymentMethod>;
 
-type PaymentOption = {
-  value: PaymentMethod;
-  label: string;
-  description: string;
-  icon: LucideIcon;
-};
-
-export const PAYMENT_OPTIONS: PaymentOption[] = [
+export const PAYMENT_OPTIONS: RadioOption[] = [
   {
     value: PAYMENT_METHODS.CARD,
     label: 'Кредитна / Дебетова картка',
