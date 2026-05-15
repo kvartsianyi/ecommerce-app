@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card';
-import { FieldGroup } from '@/shared/components/ui/field';
 import { withForm } from '@/shared/components/form';
 import { CheckoutFormOpts } from '../forms/checkout-form';
 
@@ -21,7 +20,7 @@ export const UserInfoSection = withForm({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <FieldGroup>
+        <div className="grid gap-4 md:grid-cols-2">
           <form.AppField
             name="user.name"
             children={(field) => (
@@ -37,7 +36,7 @@ export const UserInfoSection = withForm({
               />
             )}
           />
-        </FieldGroup>
+        </div>
       </CardContent>
     </Card>
   ),
