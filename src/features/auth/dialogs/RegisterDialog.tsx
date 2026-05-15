@@ -30,8 +30,7 @@ export function RegisterDialog({
 }: RegisterDialogProps) {
   const form = useAppForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      name: '',
       phone: '',
       email: '',
       password: '',
@@ -40,12 +39,9 @@ export function RegisterDialog({
     validators: {
       onSubmit: registrationSchema,
     },
-    onSubmit: async ({
-      value: { firstName, lastName, phone, email, password },
-    }) =>
+    onSubmit: async ({ value: { name, phone, email, password } }) =>
       onRegister({
-        firstName,
-        lastName,
+        name,
         email,
         password,
         phone: normalizePhoneNumber(phone),
@@ -74,20 +70,12 @@ export function RegisterDialog({
           className="space-y-4"
         >
           <FieldGroup>
-            <div className="grid grid-cols-2 gap-4">
-              <form.AppField
-                name="firstName"
-                children={(field) => (
-                  <field.TextField label="Ім'я" placeholder="Олександр" />
-                )}
-              />
-              <form.AppField
-                name="lastName"
-                children={(field) => (
-                  <field.TextField label="Прізвище" placeholder="Шевченко" />
-                )}
-              />
-            </div>
+            <form.AppField
+              name="name"
+              children={(field) => (
+                <field.TextField label="Ім'я" placeholder="Олександр" />
+              )}
+            />
             <form.AppField
               name="phone"
               children={(field) => (

@@ -8,8 +8,7 @@ type DefaultValues = z.infer<typeof checkoutSchema>;
 
 const defaultValues: DefaultValues = {
   user: {
-    firstName: '',
-    lastName: '',
+    name: '',
     phone: '',
   },
   deliveryAddress: '',

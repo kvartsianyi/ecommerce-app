@@ -27,8 +27,7 @@ export function CheckoutPage() {
   const defaultValues = {
     ...CheckoutFormOpts.defaultValues,
     user: {
-      firstName: user?.firstName ?? '',
-      lastName: user?.lastName ?? '',
+      name: user?.name ?? '',
       phone: user?.phone?.replace('+380', '') ?? '',
     },
   };

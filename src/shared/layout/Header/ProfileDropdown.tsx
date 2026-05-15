@@ -30,7 +30,7 @@ export function ProfileDropdown({ onLogout }: ProfileDropdownProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { user } = useAuth();
-  const fullName = user ? `${user.firstName} ${user.lastName}` : 'Unknown';
+  const userName = user?.name || 'Unknown';
 
   return (
     <DropdownMenu open={isProfileOpen} onOpenChange={setIsProfileOpen}>
@@ -51,11 +51,11 @@ export function ProfileDropdown({ onLogout }: ProfileDropdownProps) {
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
             <AvatarFallback className="bg-primary-foreground">
-              {fullName.slice(0, 1).toUpperCase()}
+              {userName.slice(0, 1).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span>{fullName}</span>
+            <span>{userName}</span>
             <span className="text-muted-foreground">
               {user?.email ?? 'unknown'}
             </span>
