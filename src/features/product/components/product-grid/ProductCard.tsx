@@ -87,7 +87,7 @@ export const ProductCard = memo(function ProductCard({
   return (
     <Card className="flex flex-col py-0">
       <ProductVisual
-        image={product.picture}
+        image={product.image}
         title={product.title}
         isFavorite={isFavourite}
         onToggleFavorite={() => setIsFavourite((prev) => !prev)}

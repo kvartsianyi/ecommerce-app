@@ -41,13 +41,13 @@ export const OrderSummary = withForm({
             {items.map((item) => (
               <div key={item.id} className="flex gap-3">
                 <img
-                  src={item.picture ?? defaultPizzaImage}
-                  alt={item.title}
+                  src={item.productImage ?? defaultPizzaImage}
+                  alt={item.productTitle}
                   className="size-16 rounded-md object-cover"
                 />
                 <div className="flex flex-1 flex-col justify-center">
                   <p className="text-sm font-medium leading-tight">
-                    {item.title}
+                    {item.productTitle}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     К-сть: {item.quantity}
@@ -55,7 +55,7 @@ export const OrderSummary = withForm({
                 </div>
                 <div className="flex items-center">
                   <p className="text-sm font-medium">
-                    {(item.price * item.quantity).toFixed(2)} грн
+                    {(item.productPrice * item.quantity).toFixed(2)} грн
                   </p>
                 </div>
               </div>
