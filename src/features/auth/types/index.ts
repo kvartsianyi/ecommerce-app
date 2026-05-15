@@ -4,8 +4,7 @@ export type LoginBody = {
 };
 
 export type RegistrationBody = {
-  firstName: string;
-  lastName: string;
+  name: string;
   phone: string;
   email: string;
   password: string;

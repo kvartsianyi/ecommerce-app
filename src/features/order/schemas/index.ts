@@ -1,16 +1,11 @@
 import z from 'zod';
 
-import {
-  firstNameValidator,
-  lastNameValidator,
-  phoneValidator,
-} from '@/features/auth/schemas';
+import { nameValidator, phoneValidator } from '@/features/auth/schemas';
 import { PAYMENT_METHODS, PICKUP_METHODS } from '../constants';
 
 export const checkoutSchema = z.object({
   user: z.object({
-    firstName: firstNameValidator,
-    lastName: lastNameValidator,
+    name: nameValidator,
     phone: phoneValidator,
   }),
   deliveryAddress: z
