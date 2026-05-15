@@ -21,15 +21,17 @@ export function CartItem({ item }: CartItemProps) {
       className="flex gap-4 rounded-lg border border-border p-4"
     >
       <img
-        src={item.picture || '/placeholder.svg'}
-        alt={item.title}
+        src={item.productImage || '/placeholder.svg'}
+        alt={item.productTitle}
         className="h-20 w-20 rounded-md object-cover"
       />
       <div className="flex flex-1 flex-col">
         <div className="flex items-start justify-between">
           <div>
-            <h4 className="font-semibold">{item.title}</h4>
-            <p className="text-sm text-muted-foreground">{item.price} ₴</p>
+            <h4 className="font-semibold">{item.productTitle}</h4>
+            <p className="text-sm text-muted-foreground">
+              {item.productPrice} ₴
+            </p>
           </div>
           <Button
             variant="ghost"
@@ -52,7 +54,7 @@ export function CartItem({ item }: CartItemProps) {
             }
           />
           <span className="ml-auto font-semibold">
-            {item.price * item.quantity} ₴
+            {item.productPrice * item.quantity} ₴
           </span>
         </div>
       </div>

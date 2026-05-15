@@ -1,10 +1,11 @@
 export type CartItem = {
   id: number;
   productId: number;
-  title: string;
-  price: number;
-  picture: string;
+  productTitle: string;
+  productImage: string | null;
+  productDescription: string | null;
   quantity: number;
+  productPrice: number;
 };
 
 export type Cart = {
