@@ -22,13 +22,13 @@ export const UserInfoSection = withForm({
       <CardContent>
         <div className="grid gap-4 md:grid-cols-2">
           <form.AppField
-            name="user.name"
+            name="recipientName"
             children={(field) => (
               <field.TextField label="Ім'я" placeholder="Олександр" />
             )}
           />
           <form.AppField
-            name="user.phone"
+            name="recipientPhone"
             children={(field) => (
               <field.PhoneField
                 label="Номер телефону"

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as EmailVerificationRouteImport } from './routes/email-verification'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedThankYouRouteImport } from './routes/_authenticated/thank-you'
 import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 
 const EmailVerificationRoute = EmailVerificationRouteImport.update({
@@ -28,6 +29,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedThankYouRoute = AuthenticatedThankYouRouteImport.update({
+  id: '/thank-you',
+  path: '/thank-you',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedCheckoutRoute = AuthenticatedCheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
@@ -38,11 +44,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/email-verification': typeof EmailVerificationRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
+  '/thank-you': typeof AuthenticatedThankYouRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/email-verification': typeof EmailVerificationRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
+  '/thank-you': typeof AuthenticatedThankYouRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -50,18 +58,20 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/email-verification': typeof EmailVerificationRoute
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
+  '/_authenticated/thank-you': typeof AuthenticatedThankYouRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/email-verification' | '/checkout'
+  fullPaths: '/' | '/email-verification' | '/checkout' | '/thank-you'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/email-verification' | '/checkout'
+  to: '/' | '/email-verification' | '/checkout' | '/thank-you'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/email-verification'
     | '/_authenticated/checkout'
+    | '/_authenticated/thank-you'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,6 +103,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/thank-you': {
+      id: '/_authenticated/thank-you'
+      path: '/thank-you'
+      fullPath: '/thank-you'
+      preLoaderRoute: typeof AuthenticatedThankYouRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/checkout': {
       id: '/_authenticated/checkout'
       path: '/checkout'
@@ -105,10 +122,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
+  AuthenticatedThankYouRoute: typeof AuthenticatedThankYouRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCheckoutRoute: AuthenticatedCheckoutRoute,
+  AuthenticatedThankYouRoute: AuthenticatedThankYouRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
