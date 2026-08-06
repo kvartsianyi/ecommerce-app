@@ -7,13 +7,11 @@ import { checkoutSchema } from '../../schemas';
 type DefaultValues = z.infer<typeof checkoutSchema>;
 
 const defaultValues: DefaultValues = {
-  user: {
-    name: '',
-    phone: '',
-  },
+  recipientName: '',
+  recipientPhone: '',
   deliveryAddress: '',
   pickupMethod: PICKUP_METHODS.DELIVERY,
-  paymentMethod: PAYMENT_METHODS.CARD,
+  paymentMethod: PAYMENT_METHODS.STRIPE,
   comment: '',
 };
 

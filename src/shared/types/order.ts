@@ -1,4 +1,4 @@
-export type PaymentMethod = 'card' | 'cash';
+export type PaymentMethod = 'stripe' | 'cash';
 
 export type PickupMethod = 'delivery' | 'pickup';
 

@@ -15,6 +15,7 @@ import { useCart } from '@/features/cart/api/hooks';
 import { PICKUP_METHODS } from '../constants';
 import { checkoutSchema } from '../schemas';
 import { useCheckout } from '../api/hooks';
+import { normalizePhoneNumber } from '@/shared/utils/phone';
 
 export function CheckoutPage() {
   const { user } = useAuth();
@@ -24,21 +25,22 @@ export function CheckoutPage() {
   const subtotal = data?.totalAmount ?? 0;
   const items = data?.items ?? [];
 
-  const defaultValues = {
-    ...CheckoutFormOpts.defaultValues,
-    user: {
-      name: user?.name ?? '',
-      phone: user?.phone?.replace('+380', '') ?? '',
-    },
-  };
-
   const form = useAppForm({
     ...CheckoutFormOpts,
-    defaultValues,
+    defaultValues: {
+      ...CheckoutFormOpts.defaultValues,
+      recipientName: user?.name ?? '',
+      recipientPhone: user?.phone?.replace('+380', '') ?? '',
+    },
     validators: {
       onSubmit: checkoutSchema,
     },
-    onSubmit: async ({ value }) => checkout(),
+    onSubmit: async ({ value: { recipientPhone, comment, ...restValue } }) =>
+      checkout({
+        ...restValue,
+        recipientPhone: normalizePhoneNumber(recipientPhone),
+        comment: comment || undefined,
+      }),
   });
 
   const pickupMethod = useStore(form.store, (s) => s.values.pickupMethod);

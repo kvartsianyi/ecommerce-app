@@ -26,13 +26,13 @@ export const PICKUP_OPTIONS: RadioOption[] = [
 ] as const;
 
 export const PAYMENT_METHODS = {
-  CARD: 'card',
+  STRIPE: 'stripe',
   CASH: 'cash',
 } as const satisfies Record<string, PaymentMethod>;
 
 export const PAYMENT_OPTIONS: RadioOption[] = [
   {
-    value: PAYMENT_METHODS.CARD,
+    value: PAYMENT_METHODS.STRIPE,
     label: 'Кредитна / Дебетова картка',
     description: 'Безпечна оплата карткою',
     icon: CreditCard,

@@ -4,10 +4,8 @@ import { nameValidator, phoneValidator } from '@/features/auth/schemas';
 import { PAYMENT_METHODS, PICKUP_METHODS } from '../constants';
 
 export const checkoutSchema = z.object({
-  user: z.object({
-    name: nameValidator,
-    phone: phoneValidator,
-  }),
+  recipientName: nameValidator,
+  recipientPhone: phoneValidator,
   deliveryAddress: z
     .string()
     .min(3, 'Адреса повинно містити не менше 3 символів.')
